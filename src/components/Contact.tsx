@@ -2,7 +2,11 @@
 
 import { useState } from 'react';
 
-export default function Contact() {
+interface ContactProps {
+  searchQuery?: string;
+}
+
+export default function Contact({ searchQuery = '' }: ContactProps) {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -24,6 +28,55 @@ export default function Contact() {
       [e.target.name]: e.target.value,
     });
   };
+
+  // Información de contacto
+  const contactInfo = [
+    { type: 'Email', value: '📧 CORREO@EMPRESA.COM', label: 'Email' },
+    { type: 'Teléfono', value: '📞 +52 XXX XXX XXXX', label: 'Teléfono' },
+    { type: 'Ubicación', value: '📍 UBICACIÓN DE LA EMPRESA', label: 'Ubicación' },
+    { type: 'Horario', value: '⏰ Lun - Vie: 9:00 AM - 6:00 PM', label: 'Horario' }
+  ];
+
+  // Filtrar información de contacto basado en la búsqueda
+  const filteredContactInfo = contactInfo.filter(info => {
+    if (!searchQuery) return true;
+    const query = searchQuery.toLowerCase();
+    return (
+      info.type.toLowerCase().includes(query) ||
+      info.value.toLowerCase().includes(query) ||
+      info.label.toLowerCase().includes(query)
+    );
+  });
+
+  // Contenido del formulario
+  const formContent = {
+    title: 'Comencemos Tu Proyecto',
+    subtitle: '¿Tienes una idea increíble? Estamos listos para hacerla realidad',
+    nameLabel: 'Nombre completo',
+    emailLabel: 'Correo electrónico',
+    phoneLabel: 'Teléfono',
+    messageLabel: 'Cuéntanos sobre tu proyecto',
+    buttonText: 'Enviar Mensaje'
+  };
+
+  // Verificar si hay coincidencias con la búsqueda
+  const hasMatch = !searchQuery || (
+    Object.values(formContent).some(text => text.toLowerCase().includes(searchQuery.toLowerCase())) ||
+    filteredContactInfo.length > 0
+  );
+
+  if (!hasMatch && searchQuery) {
+    return (
+      <section
+        id="contacto"
+        className="py-24 px-6 bg-white relative"
+      >
+        <div className="text-center py-12">
+          <p className="text-gray-500 text-lg">No se encontraron resultados para "{searchQuery}"</p>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section

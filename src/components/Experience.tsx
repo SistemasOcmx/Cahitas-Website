@@ -53,8 +53,42 @@ const experiences = [
   },
 ];
 
-export default function Experience() {
+interface ExperienceProps {
+  searchQuery?: string;
+}
+
+export default function Experience({ searchQuery = '' }: ExperienceProps) {
   const [activeIndex, setActiveIndex] = useState(0);
+
+  // Filtrar experiencias basado en la búsqueda
+  const filteredExperiences = experiences.filter(exp => {
+    if (!searchQuery) return true;
+    const query = searchQuery.toLowerCase();
+    return (
+      exp.title.toLowerCase().includes(query) ||
+      exp.company.toLowerCase().includes(query) ||
+      exp.description.toLowerCase().includes(query) ||
+      exp.achievements.some(achievement => achievement.toLowerCase().includes(query))
+    );
+  });
+
+  // Función para resaltar texto
+  const highlightText = (text: string) => {
+    if (!searchQuery) return text;
+    
+    const parts = text.split(new RegExp(`(${searchQuery})`, 'gi'));
+    return (
+      <>
+        {parts.map((part, index) => 
+          part.toLowerCase() === searchQuery.toLowerCase() ? (
+            <mark key={index} className="bg-yellow-300 text-gray-900 px-1 rounded">{part}</mark>
+          ) : (
+            <span key={index}>{part}</span>
+          )
+        )}
+      </>
+    );
+  };
 
   return (
     <section
@@ -74,13 +108,19 @@ export default function Experience() {
           </p>
         </div>
 
+        {filteredExperiences.length === 0 && searchQuery && (
+          <div className="text-center py-12">
+            <p className="text-gray-500 text-lg">No se encontraron experiencias que coincidan con "{searchQuery}"</p>
+          </div>
+        )}
+
         {/* Timeline */}
         <div className="relative px-4">
           {/* Vertical line */}
           <div className="absolute left-1/2 transform -translate-x-1/2 w-1 h-full bg-blue-500 hidden lg:block" />
 
           <div className="space-y-12">
-            {experiences.map((exp, index) => (
+            {filteredExperiences.map((exp, index) => (
               <div
                 key={index}
                 className={`flex flex-col lg:flex-row gap-8 items-center ${
@@ -101,19 +141,19 @@ export default function Experience() {
                     <div
                       className="inline-block px-4 py-2 bg-blue-500 text-white rounded-full font-bold text-sm mb-4"
                     >
-                      {exp.year}
+                      {highlightText(exp.year)}
                     </div>
 
                     <h3 className="text-2xl font-bold mb-2 text-gray-900">
-                      {exp.title}
+                      {highlightText(exp.title)}
                     </h3>
 
                     <p className="text-blue-600 font-semibold mb-4">
-                      {exp.company}
+                      {highlightText(exp.company)}
                     </p>
 
                     <p className="text-gray-600 mb-6 leading-relaxed">
-                      {exp.description}
+                      {highlightText(exp.description)}
                     </p>
 
                     {/* Achievements */}
@@ -138,7 +178,7 @@ export default function Experience() {
                               />
                             </svg>
                           </div>
-                          <span>{achievement}</span>
+                          <span>{highlightText(achievement)}</span>
                         </div>
                       ))}
                     </div>

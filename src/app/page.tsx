@@ -11,9 +11,14 @@ import Footer from '@/components/Footer';
 
 export default function Home() {
   const [activePage, setActivePage] = useState('inicio');
+  const [searchQuery, setSearchQuery] = useState('');
 
   const handlePageChange = (page: string) => {
     setActivePage(page);
+  };
+
+  const handleSearchChange = (query: string) => {
+    setSearchQuery(query);
   };
 
   const renderPage = () => {
@@ -21,42 +26,42 @@ export default function Home() {
       case 'inicio':
         return (
           <>
-            <Hero />
+            <Hero searchQuery={searchQuery} />
             <Footer />
           </>
         );
       case 'servicios':
         return (
           <>
-            <Services />
+            <Services searchQuery={searchQuery} />
             <Footer />
           </>
         );
       case 'experiencia':
         return (
           <>
-            <Experience />
+            <Experience searchQuery={searchQuery} />
             <Footer />
           </>
         );
       case 'nosotros':
         return (
           <>
-            <About />
+            <About searchQuery={searchQuery} />
             <Footer />
           </>
         );
       case 'contacto':
         return (
           <>
-            <Contact />
+            <Contact searchQuery={searchQuery} />
             <Footer />
           </>
         );
       default:
         return (
           <>
-            <Hero />
+            <Hero searchQuery={searchQuery} />
             <Footer />
           </>
         );
@@ -64,17 +69,14 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen flex relative bg-white">
-      {/* Fondo blanco detrás del sidebar - se adapta al ancho, oculto en móvil */}
-      <div className="hidden lg:block fixed left-0 top-0 bottom-0 z-40 bg-white transition-all duration-300" style={{ width: 'var(--sidebar-width, 320px)' }} />
-      
-      {/* Elemento decorativo para esquina inferior - se adapta al ancho, oculto en móvil */}
-      <div className="hidden lg:block fixed left-0 bottom-0 h-32 z-45 pointer-events-none transition-all duration-300" style={{ width: 'var(--sidebar-width, 320px)' }}>
-        <div className="absolute bottom-0 left-0 w-full h-full bg-gradient-to-t from-slate-800 via-slate-800/50 to-transparent rounded-br-[48px]" />
-      </div>
-      
-      <Sidebar activePage={activePage} onPageChange={handlePageChange} />
-      <main className="flex-1 relative z-30 bg-white overflow-y-auto">
+    <div className="min-h-screen flex relative bg-white transition-colors duration-500">
+      <Sidebar 
+        activePage={activePage} 
+        onPageChange={handlePageChange}
+        onSearchChange={handleSearchChange}
+        searchQuery={searchQuery}
+      />
+      <main className="flex-1 relative z-30 bg-white overflow-y-auto transition-colors duration-500">
         {renderPage()}
       </main>
     </div>

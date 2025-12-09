@@ -2,7 +2,11 @@
 
 import { useState } from 'react';
 
-export default function About() {
+interface AboutProps {
+  searchQuery?: string;
+}
+
+export default function About({ searchQuery = '' }: AboutProps) {
   const [activeTab, setActiveTab] = useState('mision');
 
   const tabs = [
@@ -50,6 +54,46 @@ export default function About() {
     },
   ];
 
+  // Contenido de misión y visión
+  const content = {
+    mision: 'Transformar ideas en experiencias digitales extraordinarias, combinando diseño innovador con tecnología de vanguardia para ayudar a nuestros clientes a alcanzar sus objetivos y destacar en el mundo digital. Nos comprometemos a ofrecer soluciones personalizadas que no solo cumplan, sino que superen las expectativas, generando un impacto positivo y duradero en cada proyecto que emprendemos.',
+    vision: 'Ser la empresa líder en soluciones digitales innovadoras, reconocida por nuestra excelencia, creatividad y compromiso con la satisfacción del cliente. Aspiramos a establecer nuevos estándares en la industria digital, impulsando el crecimiento de nuestros clientes y contribuyendo al desarrollo tecnológico de nuestra región, mientras mantenemos un enfoque centrado en las personas y el impacto social positivo.'
+  };
+
+  // Filtrar valores basado en la búsqueda
+  const filteredValores = valores.filter(valor => {
+    if (!searchQuery) return true;
+    const query = searchQuery.toLowerCase();
+    return (
+      valor.title.toLowerCase().includes(query) ||
+      valor.description.toLowerCase().includes(query)
+    );
+  });
+
+  // Verificar si hay coincidencias con la búsqueda en misión, visión o valores
+  const misionMatch = !searchQuery || content.mision.toLowerCase().includes(searchQuery.toLowerCase());
+  const visionMatch = !searchQuery || content.vision.toLowerCase().includes(searchQuery.toLowerCase());
+  const hasValoresMatch = filteredValores.length > 0;
+  const hasMatch = misionMatch || visionMatch || hasValoresMatch;
+
+  // Función para resaltar texto
+  const highlightText = (text: string) => {
+    if (!searchQuery) return text;
+    
+    const parts = text.split(new RegExp(`(${searchQuery})`, 'gi'));
+    return (
+      <>
+        {parts.map((part, index) => 
+          part.toLowerCase() === searchQuery.toLowerCase() ? (
+            <mark key={index} className="bg-yellow-300 text-gray-900 px-1 rounded">{part}</mark>
+          ) : (
+            <span key={index}>{part}</span>
+          )
+        )}
+      </>
+    );
+  };
+
   return (
     <section
       id="nosotros"
@@ -69,30 +113,38 @@ export default function About() {
           </p>
         </div>
 
-        {/* Tabs */}
-        <div className="flex justify-center mb-8 sm:mb-12 px-4">
-          <div className="inline-flex flex-wrap justify-center bg-white rounded-full p-2 shadow-lg border border-gray-200 gap-2">
-            {tabs.map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`px-4 sm:px-6 lg:px-8 py-2 sm:py-3 rounded-full font-semibold text-sm sm:text-base transition-all duration-300 flex items-center gap-1 sm:gap-2 ${
-                  activeTab === tab.id
-                    ? 'bg-gradient-to-r from-blue-600 to-cyan-600 text-white shadow-md'
-                    : 'text-gray-600 hover:text-blue-600'
-                }`}
-              >
-                <span className="text-xl">{tab.icon}</span>
-                {tab.label}
-              </button>
-            ))}
+        {!hasMatch && searchQuery && (
+          <div className="text-center py-12">
+            <p className="text-gray-500 text-lg">No se encontraron resultados que coincidan con "{searchQuery}"</p>
           </div>
-        </div>
+        )}
 
-        {/* Content */}
-        <div className="mb-16">
+        {/* Tabs */}
+        {hasMatch && (
+          <>
+            <div className="flex justify-center mb-8 sm:mb-12 px-4">
+              <div className="inline-flex flex-wrap justify-center bg-white rounded-full p-2 shadow-lg border border-gray-200 gap-2">
+                {tabs.map((tab) => (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    className={`px-4 sm:px-6 lg:px-8 py-2 sm:py-3 rounded-full font-semibold text-sm sm:text-base transition-all duration-300 flex items-center gap-1 sm:gap-2 ${
+                      activeTab === tab.id
+                        ? 'bg-gradient-to-r from-blue-600 to-cyan-600 text-white shadow-md'
+                        : 'text-gray-600 hover:text-blue-600'
+                    }`}
+                  >
+                    <span className="text-xl">{tab.icon}</span>
+                    {tab.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Content */}
+            <div className="mb-16">
           {/* Misión */}
-          {activeTab === 'mision' && (
+          {activeTab === 'mision' && misionMatch && (
             <div className="animate-fade-in">
               <div className="max-w-4xl mx-auto">
                 <div className="bg-white rounded-3xl p-12 shadow-xl border border-blue-200">
@@ -103,11 +155,7 @@ export default function About() {
                     <h3 className="text-3xl font-bold text-gray-900">Nuestra Misión</h3>
                   </div>
                   <p className="text-xl text-gray-700 leading-relaxed">
-                    Transformar ideas en experiencias digitales extraordinarias, combinando diseño innovador 
-                    con tecnología de vanguardia para ayudar a nuestros clientes a alcanzar sus objetivos 
-                    y destacar en el mundo digital. Nos comprometemos a ofrecer soluciones personalizadas 
-                    que no solo cumplan, sino que superen las expectativas, generando un impacto positivo 
-                    y duradero en cada proyecto que emprendemos.
+                    {highlightText(content.mision)}
                   </p>
                 </div>
               </div>
@@ -115,7 +163,7 @@ export default function About() {
           )}
 
           {/* Visión */}
-          {activeTab === 'vision' && (
+          {activeTab === 'vision' && visionMatch && (
             <div className="animate-fade-in">
               <div className="max-w-4xl mx-auto">
                 <div className="bg-white rounded-3xl p-12 shadow-xl border border-cyan-200">
@@ -126,12 +174,7 @@ export default function About() {
                     <h3 className="text-3xl font-bold text-gray-900">Nuestra Visión</h3>
                   </div>
                   <p className="text-xl text-gray-700 leading-relaxed">
-                    Ser reconocidos como líderes en la industria digital, referentes en innovación y 
-                    excelencia a nivel global. Aspiramos a ser el socio estratégico preferido por empresas 
-                    que buscan transformación digital, expandiendo nuestra presencia internacional mientras 
-                    mantenemos nuestro compromiso con la calidad, la creatividad y el servicio excepcional. 
-                    Visualizamos un futuro donde cada proyecto que realizamos contribuya a construir un 
-                    ecosistema digital más accesible, inclusivo y sostenible.
+                    {highlightText(content.vision)}
                   </p>
                 </div>
               </div>
@@ -139,10 +182,10 @@ export default function About() {
           )}
 
           {/* Valores */}
-          {activeTab === 'valores' && (
+          {activeTab === 'valores' && hasValoresMatch && (
             <div className="animate-fade-in">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {valores.map((valor, index) => (
+                {filteredValores.map((valor, index) => (
                   <div
                     key={index}
                     className="group relative p-8 bg-white border border-gray-200 rounded-3xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-2"
@@ -157,12 +200,12 @@ export default function About() {
 
                       {/* Title */}
                       <h3 className="text-2xl font-bold mb-4 text-gray-900">
-                        {valor.title}
+                        {highlightText(valor.title)}
                       </h3>
 
                       {/* Description */}
                       <p className="text-gray-600 leading-relaxed">
-                        {valor.description}
+                        {highlightText(valor.description)}
                       </p>
                     </div>
                   </div>
@@ -170,10 +213,10 @@ export default function About() {
               </div>
             </div>
           )}
-        </div>
+            </div>
 
-        {/* Stats Section */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            {/* Stats Section */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           {[
             { value: '4+', label: 'Años de Experiencia', icon: '📅' },
             { value: '100+', label: 'Proyectos Completados', icon: '✅' },
@@ -193,7 +236,9 @@ export default function About() {
               </div>
             </div>
           ))}
-        </div>
+            </div>
+          </>
+        )}
       </div>
     </section>
   );

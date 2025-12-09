@@ -47,8 +47,41 @@ const services = [
   },
 ];
 
-export default function Services() {
+interface ServicesProps {
+  searchQuery?: string;
+}
+
+export default function Services({ searchQuery = '' }: ServicesProps) {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
+  // Filtrar servicios basado en la búsqueda
+  const filteredServices = services.filter(service => {
+    if (!searchQuery) return true;
+    const query = searchQuery.toLowerCase();
+    return (
+      service.title.toLowerCase().includes(query) ||
+      service.description.toLowerCase().includes(query) ||
+      service.features.some(feature => feature.toLowerCase().includes(query))
+    );
+  });
+
+  // Función para resaltar texto
+  const highlightText = (text: string) => {
+    if (!searchQuery) return text;
+    
+    const parts = text.split(new RegExp(`(${searchQuery})`, 'gi'));
+    return (
+      <>
+        {parts.map((part, index) => 
+          part.toLowerCase() === searchQuery.toLowerCase() ? (
+            <mark key={index} className="bg-yellow-300 text-gray-900 px-1 rounded">{part}</mark>
+          ) : (
+            <span key={index}>{part}</span>
+          )
+        )}
+      </>
+    );
+  };
 
   return (
     <section
@@ -68,8 +101,14 @@ export default function Services() {
           </p>
         </div>
 
+        {filteredServices.length === 0 && searchQuery && (
+          <div className="text-center py-12">
+            <p className="text-gray-500 text-lg">No se encontraron servicios que coincidan con "{searchQuery}"</p>
+          </div>
+        )}
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-          {services.map((service, index) => (
+          {filteredServices.map((service, index) => (
             <div
               key={index}
               onMouseEnter={() => setHoveredIndex(index)}
@@ -86,12 +125,12 @@ export default function Services() {
 
                 {/* Title */}
                 <h3 className="text-2xl font-bold mb-4 text-gray-900">
-                  {service.title}
+                  {highlightText(service.title)}
                 </h3>
 
                 {/* Description */}
                 <p className="text-gray-600 mb-6 leading-relaxed">
-                  {service.description}
+                  {highlightText(service.description)}
                 </p>
 
                 {/* Features */}
@@ -112,7 +151,7 @@ export default function Services() {
                           clipRule="evenodd"
                         />
                       </svg>
-                      {feature}
+                      {highlightText(feature)}
                     </li>
                   ))}
                 </ul>

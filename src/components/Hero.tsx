@@ -1,6 +1,54 @@
 'use client';
 
-export default function Hero() {
+interface HeroProps {
+  searchQuery?: string;
+}
+
+export default function Hero({ searchQuery = '' }: HeroProps) {
+  const content = {
+    badge: '✨ Bienvenido a Cahita',
+    title: 'TÍTULO PRINCIPAL',
+    description: 'Descripción principal de la empresa. Aquí va el texto descriptivo que explica los servicios y la propuesta de valor.',
+    button1: 'Explorar Servicios',
+    button2: 'Contactar Ahora'
+  };
+
+  // Función para resaltar texto
+  const highlightText = (text: string) => {
+    if (!searchQuery) return text;
+    
+    const parts = text.split(new RegExp(`(${searchQuery})`, 'gi'));
+    return (
+      <>
+        {parts.map((part, index) => 
+          part.toLowerCase() === searchQuery.toLowerCase() ? (
+            <mark key={index} className="bg-yellow-300 text-gray-900 px-1 rounded">{part}</mark>
+          ) : (
+            <span key={index}>{part}</span>
+          )
+        )}
+      </>
+    );
+  };
+
+  // Verificar si hay coincidencias con la búsqueda
+  const hasMatch = !searchQuery || Object.values(content).some(text => 
+    text.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  if (!hasMatch && searchQuery) {
+    return (
+      <section
+        id="inicio"
+        className="relative min-h-screen flex items-center justify-center bg-white py-12 sm:py-16 md:py-20"
+      >
+        <div className="text-center py-12">
+          <p className="text-gray-500 text-lg">No se encontraron resultados para "{searchQuery}"</p>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section
       id="inicio"
@@ -10,21 +58,21 @@ export default function Hero() {
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 text-center w-full">
         <div className="mb-4 sm:mb-6 inline-block">
           <span className="px-3 py-1.5 sm:px-4 sm:py-2 bg-white border border-blue-200 rounded-full text-xs sm:text-sm font-medium text-blue-600">
-            ✨ Bienvenido a Cahita
+            {highlightText(content.badge)}
           </span>
         </div>
 
         <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 sm:mb-6 bg-gradient-to-r from-blue-600 via-cyan-600 to-teal-600 bg-clip-text text-transparent animate-fade-in leading-tight">
-          TÍTULO PRINCIPAL
+          {highlightText(content.title)}
         </h1>
 
         <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-700 mb-6 sm:mb-8 md:mb-10 max-w-3xl mx-auto leading-relaxed px-2">
-          Descripción principal de la empresa. Aquí va el texto descriptivo que explica los servicios y la propuesta de valor.
+          {highlightText(content.description)}
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 px-2">
           <button className="w-full sm:w-auto group px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 md:py-4 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-full font-semibold text-sm sm:text-base md:text-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2">
-            Explorar Servicios
+            {highlightText(content.button1)}
             <svg
               className="w-5 h-5 group-hover:translate-x-1 transition-transform"
               fill="none"
@@ -39,7 +87,7 @@ export default function Hero() {
           </button>
 
           <button className="w-full sm:w-auto px-5 sm:px-6 md:px-8 py-2.5 sm:py-3 md:py-4 bg-white border-2 border-blue-200 text-blue-600 rounded-full font-semibold text-sm sm:text-base md:text-lg hover:bg-white hover:shadow-xl transition-all duration-300">
-            Ver Portafolio
+            {highlightText(content.button2)}
           </button>
         </div>
 
@@ -55,10 +103,10 @@ export default function Hero() {
               className="p-4 sm:p-5 md:p-6 bg-white rounded-xl sm:rounded-2xl border border-blue-200 hover:scale-105 transition-transform duration-300 shadow-lg min-w-[90px] sm:min-w-[110px]"
             >
               <div className="text-2xl sm:text-3xl font-bold text-blue-600">
-                {stat.number}
+                {highlightText(stat.number)}
               </div>
               <div className="text-xs sm:text-sm text-gray-600 mt-1">
-                {stat.label}
+                {highlightText(stat.label)}
               </div>
             </div>
           ))}
