@@ -6,9 +6,9 @@ interface HeroProps {
 
 export default function Hero({ searchQuery = '' }: HeroProps) {
   const content = {
-    badge: '✨ Bienvenido a Cahita',
-    title: 'TÍTULO PRINCIPAL',
-    description: 'Descripción principal de la empresa. Aquí va el texto descriptivo que explica los servicios y la propuesta de valor.',
+    badge: '✨ Bienvenido a Cahita Constructora',
+    title: 'Construyendo Tus Sueños con Excelencia',
+    description: 'Somos una empresa constructora comprometida con la calidad y la innovación. Transformamos tus proyectos en realidades sólidas con los más altos estándares de construcción.',
     button1: 'Explorar Servicios',
     button2: 'Contactar Ahora'
   };
@@ -54,19 +54,28 @@ export default function Hero({ searchQuery = '' }: HeroProps) {
       id="inicio"
       className="relative min-h-screen flex items-center justify-center bg-white py-12 sm:py-16 md:py-20"
     >
+      {/* Background Image */}
+      <div className="absolute inset-0 z-0">
+        <img 
+          src="/img/fondo.png" 
+          alt="Background" 
+          className="w-full h-full object-cover"
+        />
+      </div>
+      
       {/* Content */}
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 text-center w-full">
         <div className="mb-4 sm:mb-6 inline-block">
-          <span className="px-3 py-1.5 sm:px-4 sm:py-2 bg-white border border-blue-200 rounded-full text-xs sm:text-sm font-medium text-blue-600">
+          <span className="px-3 py-1.5 sm:px-4 sm:py-2 bg-white/90 backdrop-blur-sm border border-white rounded-full text-xs sm:text-sm font-medium text-blue-600 shadow-lg">
             {highlightText(content.badge)}
           </span>
         </div>
 
-        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 sm:mb-6 bg-gradient-to-r from-blue-600 via-cyan-600 to-teal-600 bg-clip-text text-transparent animate-fade-in leading-tight">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 sm:mb-6 text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.8)] animate-fade-in leading-tight">
           {highlightText(content.title)}
         </h1>
 
-        <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-700 mb-6 sm:mb-8 md:mb-10 max-w-3xl mx-auto leading-relaxed px-2">
+        <p className="text-sm sm:text-base md:text-lg lg:text-xl text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] mb-6 sm:mb-8 md:mb-10 max-w-3xl mx-auto leading-relaxed px-2">
           {highlightText(content.description)}
         </p>
 
@@ -94,9 +103,9 @@ export default function Hero({ searchQuery = '' }: HeroProps) {
         {/* Floating indicators */}
         <div className="mt-8 sm:mt-12 md:mt-16 flex justify-center gap-3 sm:gap-6 md:gap-8 flex-wrap px-2">
           {[
-            { number: 'NUM 1', label: 'Estadística 1' },
-            { number: 'NUM 2', label: 'Estadística 2' },
-            { number: 'NUM 3', label: 'Estadística 3' },
+            { number: '5+', label: 'Años de Experiencia' },
+            { number: '18+', label: 'Proyectos Completados' },
+            { number: '98%', label: 'Clientes Satisfechos' },
           ].map((stat, index) => (
             <div
               key={index}
@@ -116,7 +125,7 @@ export default function Hero({ searchQuery = '' }: HeroProps) {
       {/* Scroll indicator */}
       <div className="absolute bottom-4 sm:bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce hidden sm:block">
         <svg
-          className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600"
+          className="w-5 h-5 sm:w-6 sm:h-6 text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
           fill="none"
           strokeLinecap="round"
           strokeLinejoin="round"

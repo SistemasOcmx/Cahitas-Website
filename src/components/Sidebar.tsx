@@ -153,10 +153,10 @@ export default function Sidebar({ activePage, onPageChange, onSearchChange, sear
             {/* Logo y Nombre */}
             <div className={`flex items-center gap-3 transition-all duration-300 ${isCollapsed ? 'flex-col' : 'flex-row'}`}>
               {/* Logo - siempre visible */}
-              <div className={`bg-gradient-to-br from-blue-500 via-purple-500 to-cyan-500 rounded-2xl flex items-center justify-center shadow-xl transition-all duration-300 flex-shrink-0 ${
+              <div className={`rounded-2xl overflow-hidden flex items-center justify-center shadow-xl transition-all duration-300 flex-shrink-0 ${
                 isDarkMode ? 'shadow-blue-500/50' : 'shadow-blue-500/30'
               } ${isCollapsed ? 'w-12 h-12' : 'w-14 h-14'}`}>
-                <span className={`text-white font-bold transition-all duration-300 ${isCollapsed ? 'text-2xl' : 'text-3xl'}`}>C</span>
+                <img src="/img/Logo.jpeg" alt="Cahita Logo" className="w-full h-full object-cover" />
               </div>
               
               {/* Nombre y subtítulo - solo visible cuando NO está colapsado */}
@@ -166,7 +166,7 @@ export default function Sidebar({ activePage, onPageChange, onSearchChange, sear
                 }`}>Cahita</h1>
                 <p className={`text-xs transition-colors duration-300 ${
                   isDarkMode ? 'text-gray-400' : 'text-gray-500'
-                }`}>Solutions</p>
+                }`}>Constructora</p>
               </div>
             </div>
 

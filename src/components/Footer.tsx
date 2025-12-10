@@ -2,7 +2,7 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-black text-gray-200 relative transition-all duration-300" style={{ marginLeft: 'calc(var(--sidebar-width, 0px) * -1)', paddingLeft: 'var(--sidebar-width, 0px)' }}>
+    <footer className="bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 text-gray-200 relative transition-all duration-300" style={{ marginLeft: 'calc(var(--sidebar-width, 0px) * -1)', paddingLeft: 'var(--sidebar-width, 0px)' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-16 relative z-10">
         {/* Main Footer Content */}
         <div className="space-y-8 mb-12 md:space-y-0">
@@ -11,15 +11,15 @@ export default function Footer() {
             {/* Brand Section - Full Width */}
             <div className="text-center">
               <div className="flex items-center gap-2 mb-4 justify-center">
-                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full flex items-center justify-center">
-                  <span className="text-white font-bold text-xs">LOGO</span>
+                <div className="w-10 h-10 rounded-full overflow-hidden">
+                  <img src="/img/Logo.jpeg" alt="Logo" className="w-full h-full object-cover" />
                 </div>
                 <span className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
-                  NOMBRE EMPRESA
+                  Cahita Constructora
                 </span>
               </div>
               <p className="text-gray-400 mb-6 leading-relaxed max-w-3xl mx-auto">
-                DESCRIPCIÓN DE LA EMPRESA - Aquí va la descripción breve de la empresa y sus servicios.
+                Empresa constructora líder comprometida con la excelencia en cada proyecto. Ofrecemos soluciones integrales de construcción con los más altos estándares de calidad.
               </p>
             </div>
 
@@ -110,15 +110,15 @@ export default function Footer() {
             {/* Brand */}
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full flex items-center justify-center">
-                  <span className="text-white font-bold text-xs">LOGO</span>
+                <div className="w-10 h-10 rounded-full overflow-hidden">
+                  <img src="/img/Logo.jpeg" alt="Logo" className="w-full h-full object-cover" />
                 </div>
                 <span className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
-                  NOMBRE EMPRESA
+                  Cahita Constructora
                 </span>
               </div>
               <p className="text-gray-400 mb-6 leading-relaxed">
-                DESCRIPCIÓN DE LA EMPRESA - Aquí va la descripción breve de la empresa y sus servicios.
+                Empresa constructora líder comprometida con la excelencia en cada proyecto. Ofrecemos soluciones integrales de construcción con los más altos estándares de calidad.
               </p>
             </div>
 
