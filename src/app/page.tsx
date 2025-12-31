@@ -70,8 +70,8 @@ export default function Home() {
 
   return (
     <div className="min-h-screen flex relative bg-white transition-colors duration-500">
-      <Sidebar 
-        activePage={activePage} 
+      <Sidebar
+        activePage={activePage}
         onPageChange={handlePageChange}
         onSearchChange={handleSearchChange}
         searchQuery={searchQuery}
