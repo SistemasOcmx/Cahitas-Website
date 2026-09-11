@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -12,9 +12,15 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+};
+
 export const metadata: Metadata = {
-  title: "Cahitas - Experiencias Digitales Únicas",
-  description: "Transformamos ideas en realidades digitales extraordinarias con diseño innovador y tecnología de vanguardia",
+  title: "Cahitas - Constructora",
+  description: "Construimos espacios y estructuras de calidad, combinando innovación, eficiencia y compromiso con nuestros clientes",
 };
 
 export default function RootLayout({

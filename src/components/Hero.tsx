@@ -1,58 +1,49 @@
-'use client';
+﻿'use client';
 
 import { useEffect, useState } from 'react';
 
 interface HeroProps {
   searchQuery?: string;
+  onNavigate?: (page: string) => void;
 }
 
-export default function Hero({ searchQuery = '' }: HeroProps) {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [particles, setParticles] = useState<Array<{ id: number; x: number; y: number; size: number; duration: number }>>([]);
+export default function Hero({ searchQuery = '', onNavigate }: HeroProps) {
+  const [isVisible, setIsVisible] = useState(false);
+
+  const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
 
   const content = {
-    badge: '✨ Bienvenido a Cahita Constructora',
+    badge: 'Construyendo desde 2021',
     title: 'Construyendo Tus Sueños con Excelencia',
     description: 'Somos una empresa constructora comprometida con la calidad y la innovación. Transformamos tus proyectos en realidades sólidas con los más altos estándares de construcción.',
     button1: 'Explorar Servicios',
-    button2: 'Contactar Ahora'
+    button2: 'Contactar Ahora',
   };
 
-  // Generar partículas flotantes
   useEffect(() => {
-    const newParticles = Array.from({ length: 30 }, (_, i) => ({
-      id: i,
-      x: Math.random() * 100,
-      y: Math.random() * 100,
-      size: Math.random() * 4 + 2,
-      duration: Math.random() * 10 + 15,
-    }));
-    setParticles(newParticles);
+    setIsVisible(true);
   }, []);
 
-  // Seguir el mouse para efecto parallax
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({
-        x: (e.clientX / window.innerWidth - 0.5) * 20,
-        y: (e.clientY / window.innerHeight - 0.5) * 20,
+      setMousePos({
+        x: (e.clientX / window.innerWidth) * 100,
+        y: (e.clientY / window.innerHeight) * 100,
       });
     };
-
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
-  // Función para resaltar texto
   const highlightText = (text: string) => {
     if (!searchQuery) return text;
-
-    const parts = text.split(new RegExp(`(${searchQuery})`, 'gi'));
+    const escaped = searchQuery.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const parts = text.split(new RegExp(`(${escaped})`, 'gi'));
     return (
       <>
         {parts.map((part, index) =>
           part.toLowerCase() === searchQuery.toLowerCase() ? (
-            <mark key={index} className="bg-yellow-300 text-gray-900 px-1 rounded">{part}</mark>
+            <mark key={index} className="bg-amber-400 text-gray-900 px-1 rounded">{part}</mark>
           ) : (
             <span key={index}>{part}</span>
           )
@@ -61,19 +52,15 @@ export default function Hero({ searchQuery = '' }: HeroProps) {
     );
   };
 
-  // Verificar si hay coincidencias con la búsqueda
   const hasMatch = !searchQuery || Object.values(content).some(text =>
     text.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   if (!hasMatch && searchQuery) {
     return (
-      <section
-        id="inicio"
-        className="relative min-h-screen flex items-center justify-center bg-white py-12 sm:py-16 md:py-20"
-      >
+      <section id="inicio" className="relative min-h-screen flex items-center justify-center bg-white">
         <div className="text-center py-12">
-          <p className="text-gray-500 text-lg">No se encontraron resultados para "{searchQuery}"</p>
+          <p className="text-gray-500 text-lg">No se encontraron resultados para &quot;{searchQuery}&quot;</p>
         </div>
       </section>
     );
@@ -82,139 +69,227 @@ export default function Hero({ searchQuery = '' }: HeroProps) {
   return (
     <section
       id="inicio"
-      className="relative min-h-screen flex items-center justify-center bg-slate-900 overflow-hidden py-12 sm:py-16 md:py-20"
+      className="relative min-h-screen overflow-hidden flex flex-col"
     >
-      {/* Background Image with Parallax - Posicionada a la izquierda */}
+      {/* ── Full-bleed background image ── */}
+      <img
+        src="/img/fondo.png"
+        alt="Obras de construcción"
+        className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none select-none"
+        style={{ objectPosition: '58% center' }}
+      />
+
+      {/* ── Gradient layers over image ── */}
+      {/* Left white wash: solid white left → fades to transparent right */}
       <div
-        className="absolute inset-0 z-0 transition-transform duration-300 ease-out"
+        className="absolute inset-0 z-[1] pointer-events-none"
         style={{
-          transform: `translate(${mousePosition.x}px, ${mousePosition.y}px) scale(1.1)`,
+          background:
+            'linear-gradient(100deg, #ffffff 0%, #ffffff 26%, rgba(255,255,255,0.94) 38%, rgba(255,255,255,0.6) 52%, rgba(255,255,255,0.15) 68%, transparent 82%)',
         }}
-      >
-        <img
-          src="/img/fondo.png"
-          alt="Background"
-          className="w-full h-full object-cover opacity-70"
-          style={{ objectPosition: '35% center' }}
-        />
-      </div>
+      />
+      {/* Top softener */}
+      <div
+        className="absolute top-0 left-0 right-0 h-48 z-[1] pointer-events-none"
+        style={{ background: 'linear-gradient(to bottom, rgba(255,255,255,0.5) 0%, transparent 100%)' }}
+      />
+      {/* Bottom dark scrim for stats bar readability */}
+      <div
+        className="absolute bottom-0 left-0 right-0 z-[1] pointer-events-none"
+        style={{ height: '240px', background: 'linear-gradient(to top, rgba(8,12,20,0.72) 0%, rgba(8,12,20,0.2) 55%, transparent 100%)' }}
+      />
 
-      {/* Gradient Overlay - Más sutil */}
-      <div className="absolute inset-0 bg-gradient-to-b from-blue-900/40 via-slate-900/30 to-slate-900/60 z-[1]" />
+      {/* ── Orange top accent bar ── */}
+      <div
+        className="absolute top-0 left-0 right-0 h-1 z-30 pointer-events-none"
+        style={{ background: 'linear-gradient(to right, #2563eb 0%, #06b6d4 50%, #2563eb 100%)' }}
+      />
 
-      {/* Animated Particles */}
-      <div className="absolute inset-0 z-[2] overflow-hidden">
-        {particles.map((particle) => (
+      {/* ── Dot grid (subtle, only visible over white zone) ── */}
+      <div
+        className="absolute inset-0 z-[2] pointer-events-none"
+        style={{
+          backgroundImage: 'radial-gradient(circle, rgba(0,0,0,0.045) 1px, transparent 1px)',
+          backgroundSize: '40px 40px',
+        }}
+      />
+
+      {/* ── Mouse-tracking glow ── */}
+      <div
+        className="absolute pointer-events-none z-[2]"
+        style={{
+          width: '700px',
+          height: '700px',
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(37,99,235,0.05) 0%, transparent 65%)',
+          left: `${mousePos.x}%`,
+          top: `${mousePos.y}%`,
+          transform: 'translate(-50%, -50%)',
+          transition: 'left 1.6s ease-out, top 1.6s ease-out',
+        }}
+      />
+
+      {/* ══ MAIN CONTENT ══ */}
+      <div className="relative z-10 flex-1 flex flex-col justify-center px-6 sm:px-12 lg:px-16 xl:px-24 pt-20 sm:pt-24 pb-12">
+
+        {/* Text block — left-anchored, max-w so it sits over the white gradient zone */}
+        <div className="w-full max-w-[600px]">
+
+          {/* Badge */}
           <div
-            key={particle.id}
-            className="absolute rounded-full bg-blue-400/30 blur-sm animate-float"
+            className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full mb-7"
             style={{
-              left: `${particle.x}%`,
-              top: `${particle.y}%`,
-              width: `${particle.size}px`,
-              height: `${particle.size}px`,
-              animationDuration: `${particle.duration}s`,
-              animationDelay: `${Math.random() * 5}s`,
+              background: 'rgba(37,99,235,0.07)',
+              border: '1px solid rgba(37,99,235,0.22)',
+              opacity: isVisible ? 1 : 0,
+              transform: isVisible ? 'translateY(0)' : 'translateY(12px)',
+              transition: 'opacity 0.6s ease 0.05s, transform 0.6s ease 0.05s',
             }}
-          />
-        ))}
-      </div>
-
-      {/* Glowing Orbs */}
-      <div className="absolute top-20 left-10 w-72 h-72 bg-blue-500/20 rounded-full blur-3xl animate-pulse z-[2]" />
-      <div className="absolute bottom-20 right-10 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl animate-pulse z-[2]" style={{ animationDelay: '1s' }} />
-
-      {/* Content */}
-      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 text-center w-full">
-        {/* Title with gradient and animation - SIN BADGE */}
-        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black mb-6 sm:mb-8 bg-gradient-to-r from-white via-blue-100 to-cyan-200 bg-clip-text text-transparent animate-fade-in leading-tight drop-shadow-2xl">
-          {highlightText(content.title)}
-        </h1>
-
-        {/* Description */}
-        <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-blue-100 mb-8 sm:mb-10 md:mb-12 max-w-4xl mx-auto leading-relaxed px-2 animate-fade-in font-light" style={{ animationDelay: '0.2s' }}>
-          {highlightText(content.description)}
-        </p>
-
-        {/* Buttons with advanced effects */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 px-2 mb-12 sm:mb-16 animate-fade-in" style={{ animationDelay: '0.4s' }}>
-          <button className="relative w-full sm:w-auto group px-6 sm:px-8 md:px-10 py-3 sm:py-4 md:py-5 bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 text-white rounded-full font-bold text-sm sm:text-base md:text-lg shadow-2xl shadow-blue-500/50 hover:shadow-blue-500/80 hover:scale-105 transition-all duration-300 flex items-center justify-center gap-3 overflow-hidden">
-            {/* Shimmer effect */}
-            <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-700" />
-
-            {/* Ripple effect on hover */}
-            <span className="absolute inset-0 rounded-full bg-white/0 group-hover:bg-white/10 transition-colors duration-300" />
-
-            <span className="relative">{highlightText(content.button1)}</span>
-            <svg
-              className="relative w-5 h-5 group-hover:translate-x-2 transition-transform duration-300"
-              fill="none"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2.5"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-            </svg>
-          </button>
-
-          <button className="relative w-full sm:w-auto group px-6 sm:px-8 md:px-10 py-3 sm:py-4 md:py-5 bg-white/10 backdrop-blur-md border-2 border-white/30 text-white rounded-full font-bold text-sm sm:text-base md:text-lg hover:bg-white/20 hover:border-white/50 hover:shadow-2xl transition-all duration-300 overflow-hidden">
-            <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-700" />
-            <span className="relative">{highlightText(content.button2)}</span>
-          </button>
-        </div>
-
-        {/* Stats with glassmorphism */}
-        <div className="flex justify-center gap-4 sm:gap-6 md:gap-8 flex-wrap px-2 mb-16 sm:mb-20 animate-fade-in" style={{ animationDelay: '0.8s' }}>
-          {[
-            { number: '5+', label: 'Años de Experiencia' },
-            { number: '18+', label: 'Proyectos Completados' },
-            { number: '98%', label: 'Clientes Satisfechos' },
-          ].map((stat, index) => (
-            <div
-              key={index}
-              className="group relative p-5 sm:p-6 md:p-8 bg-white/10 backdrop-blur-lg rounded-2xl sm:rounded-3xl border border-white/20 hover:bg-white/20 hover:scale-110 hover:border-white/40 transition-all duration-500 shadow-xl hover:shadow-2xl min-w-[110px] sm:min-w-[140px] overflow-hidden"
-            >
-              {/* Glow effect */}
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-400/0 via-cyan-400/0 to-blue-400/0 group-hover:from-blue-400/20 group-hover:via-cyan-400/20 group-hover:to-blue-400/20 transition-all duration-500 rounded-2xl sm:rounded-3xl" />
-
-              <div className="relative">
-                <div className="text-2xl sm:text-3xl md:text-4xl font-black bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent mb-2">
-                  {highlightText(stat.number)}
-                </div>
-                <div className="text-xs sm:text-sm text-blue-100 font-medium">
-                  {highlightText(stat.label)}
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Scroll indicator with mouse icon */}
-      <div className="absolute bottom-8 sm:bottom-12 left-1/2 transform -translate-x-1/2 z-10 hidden sm:block">
-        <div className="flex flex-col items-center gap-3">
-          {/* Mouse Icon */}
-          <div className="relative w-7 h-11 border-2 border-white/60 rounded-full p-1.5">
-            {/* Mouse wheel */}
-            <div className="absolute top-2 left-1/2 transform -translate-x-1/2 w-1 h-2 bg-white/60 rounded-full animate-bounce"
-              style={{ animationDuration: '1.5s' }} />
+          >
+            <span
+              className="w-1.5 h-1.5 rounded-full bg-blue-600 flex-shrink-0"
+              style={{ boxShadow: '0 0 8px rgba(37,99,235,0.9)', animation: 'pulse 2s ease-in-out infinite' }}
+            />
+            <span className="text-blue-600 text-xs font-bold uppercase tracking-[0.22em]">
+              {highlightText(content.badge)}
+            </span>
           </div>
 
-          {/* Arrow down */}
-          <svg
-            className="w-5 h-5 text-white/60 animate-bounce"
-            fill="none"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            style={{ animationDuration: '1.5s', animationDelay: '0.2s' }}
+          {/* ── Headline ── */}
+          <div
+            style={{
+              opacity: isVisible ? 1 : 0,
+              transform: isVisible ? 'translateY(0)' : 'translateY(24px)',
+              transition: 'opacity 0.7s ease 0.15s, transform 0.7s ease 0.15s',
+            }}
           >
-            <path d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
-          </svg>
+            <h1 className="font-black tracking-tighter leading-tight mb-7"
+              style={{ fontSize: 'clamp(2.2rem, 5vw, 4rem)', color: '#111827' }}
+            >
+              {highlightText('Construyendo Tus Sueños con Excelencia')}
+            </h1>
+          </div>
+
+          {/* Description */}
+          <p
+            className="text-base sm:text-[17px] leading-relaxed mb-8 max-w-[440px]"
+            style={{
+              color: '#4b5563',
+              opacity: isVisible ? 1 : 0,
+              transform: isVisible ? 'translateY(0)' : 'translateY(12px)',
+              transition: 'opacity 0.7s ease 0.35s, transform 0.7s ease 0.35s',
+            }}
+          >
+            {highlightText(content.description)}
+          </p>
+
+          {/* CTAs */}
+          <div
+            className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 mb-7"
+            style={{
+              opacity: isVisible ? 1 : 0,
+              transform: isVisible ? 'translateY(0)' : 'translateY(12px)',
+              transition: 'opacity 0.7s ease 0.5s, transform 0.7s ease 0.5s',
+            }}
+          >
+            {/* Primary */}
+            <button
+              className="group relative inline-flex items-center justify-center gap-3 w-full sm:w-auto px-8 py-4 text-white font-bold text-sm rounded-2xl transition-all duration-300 overflow-hidden hover:-translate-y-0.5"
+              style={{ background: 'linear-gradient(135deg, #2563eb 0%, #06b6d4 100%)', boxShadow: '0 4px 24px rgba(37,99,235,0.45)' }}
+              onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 8px 36px rgba(37,99,235,0.65)'; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 4px 24px rgba(37,99,235,0.45)'; }}
+              onClick={() => onNavigate?.('servicios')}
+            >
+              <span className="relative z-10">{highlightText(content.button1)}</span>
+              <svg className="relative z-10 w-4 h-4 group-hover:translate-x-1.5 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+              <div
+                className="absolute inset-0 -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-700 z-0"
+                style={{ background: 'linear-gradient(to right, transparent, rgba(255,255,255,0.15), transparent)' }}
+              />
+            </button>
+
+            {/* Secondary — frosted glass, works over gradient + image */}
+            <button
+              className="group inline-flex items-center justify-center gap-3 w-full sm:w-auto px-8 py-4 font-semibold text-sm rounded-2xl transition-all duration-300 hover:-translate-y-0.5"
+              style={{
+                background: 'rgba(255,255,255,0.82)',
+                backdropFilter: 'blur(12px)',
+                border: '1px solid rgba(255,255,255,0.75)',
+                color: '#374151',
+                boxShadow: '0 2px 10px rgba(0,0,0,0.08)',
+              }}
+              onMouseEnter={e => {
+                (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.95)';
+                (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(37,99,235,0.25)';
+              }}
+              onMouseLeave={e => {
+                (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.82)';
+                (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(255,255,255,0.75)';
+              }}
+              onClick={() => onNavigate?.('contacto')}
+            >
+              {highlightText(content.button2)}
+              <svg className="w-4 h-4 opacity-40 group-hover:opacity-90 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+              </svg>
+            </button>
+          </div>
+
+
+        </div>
+
+
+      </div>
+
+
+
+      {/* ── Scroll indicator ── */}
+      <div className="relative z-20 flex justify-center pb-8">
+        <div
+          className="flex flex-col items-center gap-2"
+          style={{
+            opacity: isVisible ? 1 : 0,
+            transition: 'opacity 0.8s ease 1.2s',
+          }}
+        >
+          {/* Mouse icon */}
+          <div
+            className="relative flex items-start justify-center"
+            style={{
+              width: '26px',
+              height: '40px',
+              borderRadius: '13px',
+              border: '2px solid rgba(255,255,255,0.55)',
+            }}
+          >
+            {/* Animated scroll wheel dot */}
+            <div
+              style={{
+                width: '4px',
+                height: '8px',
+                borderRadius: '2px',
+                background: '#2563eb',
+                marginTop: '6px',
+                animation: 'scrollWheel 1.6s ease-in-out infinite',
+              }}
+            />
+          </div>
+          <span
+            className="text-[10px] uppercase font-medium"
+            style={{ color: 'rgba(255,255,255,0.45)', letterSpacing: '0.25em' }}
+          >
+            Scroll
+          </span>
+          <style>{`
+            @keyframes scrollWheel {
+              0%   { opacity: 1; transform: translateY(0); }
+              60%  { opacity: 0; transform: translateY(10px); }
+              61%  { opacity: 0; transform: translateY(0); }
+              100% { opacity: 1; transform: translateY(0); }
+            }
+          `}</style>
         </div>
       </div>
     </section>

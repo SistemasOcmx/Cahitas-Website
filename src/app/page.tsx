@@ -26,7 +26,7 @@ export default function Home() {
       case 'inicio':
         return (
           <>
-            <Hero searchQuery={searchQuery} />
+            <Hero searchQuery={searchQuery} onNavigate={handlePageChange} />
             <Footer />
           </>
         );
@@ -76,7 +76,7 @@ export default function Home() {
         onSearchChange={handleSearchChange}
         searchQuery={searchQuery}
       />
-      <main className="flex-1 relative z-30 bg-white overflow-y-auto transition-colors duration-500">
+      <main className="flex-1 relative z-30 overflow-y-auto" style={{ background: '#ffffff' }}>
         {renderPage()}
       </main>
     </div>

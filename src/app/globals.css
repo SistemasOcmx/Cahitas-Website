@@ -1,5 +1,21 @@
 @import "tailwindcss";
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  overflow-x: hidden;
+}
+
+@media (max-width: 639px) {
+  p, li, span:not([class*="font-"]):not([class*="text-"]):not([class*="uppercase"]):not([class*="tracking"]) {
+    text-align: justify;
+  }
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -50,11 +66,11 @@ body.dark-mode span:not(.bg-gradient-to-r):not(.bg-clip-text) {
 
 @media (min-width: 1024px) {
   body {
-    --sidebar-width: 320px;
+    --sidebar-width: 280px;
   }
   
   body.sidebar-collapsed {
-    --sidebar-width: 80px;
+    --sidebar-width: 72px;
   }
 }
 

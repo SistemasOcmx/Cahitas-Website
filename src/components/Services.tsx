@@ -1,12 +1,14 @@
-'use client';
+﻿'use client';
 
 import { useState, useEffect, useRef } from 'react';
 
 const services = [
   {
     title: 'Construcción Residencial',
-    description: 'Diseñamos y construimos hogares que reflejan tu estilo de vida, combinando funcionalidad con estética moderna.',
-    color: 'from-blue-500 to-cyan-500',
+    description: 'Diseñamos y construimos hogares que reflejan tu estilo de vida, combinando funcionalidad con estética moderna y materiales de primera calidad.',
+    accent: '#f97316',
+    tag: 'Hogares',
+    image: '/img/construccion_residencial.png',
     features: ['Diseño personalizado', 'Materiales de calidad', 'Acabados premium'],
     icon: (
       <svg className="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -16,8 +18,10 @@ const services = [
   },
   {
     title: 'Proyectos Comerciales',
-    description: 'Espacios comerciales diseñados para maximizar la productividad y crear experiencias memorables para tus clientes.',
-    color: 'from-cyan-500 to-teal-500',
+    description: 'Espacios comerciales diseñados para maximizar la productividad y crear experiencias memorables para tus clientes y colaboradores.',
+    accent: '#ea580c',
+    tag: 'Comercial',
+    image: '/img/proyectos_comerciales.png',
     features: ['Diseño funcional', 'Optimización de espacios', 'Entrega a tiempo'],
     icon: (
       <svg className="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -27,8 +31,10 @@ const services = [
   },
   {
     title: 'Remodelación',
-    description: 'Transformamos espacios existentes en ambientes renovados que superan tus expectativas y necesidades actuales.',
-    color: 'from-teal-500 to-emerald-500',
+    description: 'Transformamos espacios existentes en ambientes renovados que superan tus expectativas y elevan el valor de tu propiedad.',
+    accent: '#f97316',
+    tag: 'Renovación',
+    image: '/img/remodelacion.png',
     features: ['Renovación completa', 'Modernización', 'Mejora de valor'],
     icon: (
       <svg className="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -38,8 +44,10 @@ const services = [
   },
   {
     title: 'Diseño Arquitectónico',
-    description: 'Creamos diseños arquitectónicos innovadores que combinan belleza, funcionalidad y sostenibilidad.',
-    color: 'from-sky-500 to-blue-500',
+    description: 'Creamos diseños arquitectónicos innovadores que combinan belleza, funcionalidad y sostenibilidad pensados para el futuro.',
+    accent: '#ea580c',
+    tag: 'Arquitectura',
+    image: '/img/diseño_arquitectonico.png',
     features: ['Planos detallados', 'Renders 3D', 'Asesoría profesional'],
     icon: (
       <svg className="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -49,8 +57,10 @@ const services = [
   },
   {
     title: 'Supervisión de Obra',
-    description: 'Garantizamos que cada proyecto se ejecute con los más altos estándares de calidad y seguridad.',
-    color: 'from-indigo-500 to-blue-500',
+    description: 'Garantizamos que cada proyecto se ejecute con los más altos estándares de calidad, seguridad y dentro de los tiempos establecidos.',
+    accent: '#f97316',
+    tag: 'Control',
+    image: '/img/supervision.png',
     features: ['Control de calidad', 'Gestión de tiempos', 'Reportes detallados'],
     icon: (
       <svg className="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -60,8 +70,10 @@ const services = [
   },
   {
     title: 'Consultoría',
-    description: 'Asesoramiento experto en todas las fases de tu proyecto de construcción, desde la planificación hasta la ejecución.',
-    color: 'from-blue-600 to-cyan-600',
+    description: 'Asesoramiento experto en todas las fases de tu proyecto de construcción, desde la planificación estratégica hasta la ejecución final.',
+    accent: '#ea580c',
+    tag: 'Asesoría',
+    image: '/img/consultoria.png',
     features: ['Análisis de viabilidad', 'Presupuestos', 'Optimización de recursos'],
     icon: (
       <svg className="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -76,43 +88,21 @@ interface ServicesProps {
 }
 
 export default function Services({ searchQuery = '' }: ServicesProps) {
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  const [visibleCards, setVisibleCards] = useState<boolean[]>([]);
-  const [selectedService, setSelectedService] = useState<number | null>(null);
-  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [sectionVisible, setSectionVisible] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
 
-  // Intersection Observer para animaciones al scroll
   useEffect(() => {
-    const observers = cardRefs.current.map((card, index) => {
-      if (!card) return null;
-
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              setTimeout(() => {
-                setVisibleCards((prev) => {
-                  const newVisible = [...prev];
-                  newVisible[index] = true;
-                  return newVisible;
-                });
-              }, index * 100);
-            }
-          });
-        },
-        { threshold: 0.1 }
-      );
-
-      observer.observe(card);
-      return observer;
-    });
-
-    return () => {
-      observers.forEach((observer) => observer?.disconnect());
-    };
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) setSectionVisible(true);
+      },
+      { threshold: 0.1 }
+    );
+    if (sectionRef.current) observer.observe(sectionRef.current);
+    return () => observer.disconnect();
   }, []);
 
-  // Filtrar servicios basado en la búsqueda
   const filteredServices = services.filter(service => {
     if (!searchQuery) return true;
     const query = searchQuery.toLowerCase();
@@ -123,202 +113,248 @@ export default function Services({ searchQuery = '' }: ServicesProps) {
     );
   });
 
-  // Función para resaltar texto
   const highlightText = (text: string) => {
     if (!searchQuery) return text;
-
-    const parts = text.split(new RegExp(`(${searchQuery})`, 'gi'));
+    const escaped = searchQuery.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const parts = text.split(new RegExp(`(${escaped})`, 'gi'));
     return (
       <>
-        {parts.map((part, index) =>
+        {parts.map((part, i) =>
           part.toLowerCase() === searchQuery.toLowerCase() ? (
-            <mark key={index} className="bg-yellow-300 text-gray-900 px-1 rounded">{part}</mark>
+            <mark key={i} className="bg-amber-300 text-gray-900 px-0.5 rounded">{part}</mark>
           ) : (
-            <span key={index}>{part}</span>
+            <span key={i}>{part}</span>
           )
         )}
       </>
     );
   };
 
+  const active = filteredServices[Math.min(activeIndex, filteredServices.length - 1)];
+  const activeNum = Math.min(activeIndex, filteredServices.length - 1);
+
   return (
     <section
+      ref={sectionRef}
       id="servicios"
-      className="py-24 px-6 bg-gradient-to-br from-slate-50 via-white to-blue-50 relative overflow-hidden"
+      className="relative overflow-hidden"
+      style={{ background: '#f8f8f6', minHeight: '100vh' }}
     >
-      {/* Background decorative elements */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-blue-100/30 rounded-full blur-3xl" />
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-cyan-100/30 rounded-full blur-3xl" />
-
-      <div className="max-w-7xl mx-auto relative z-10">
-        <div className="text-center mb-16 sm:mb-20">
-          <span className="inline-block px-4 py-2 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-full text-xs sm:text-sm font-bold uppercase tracking-wider mb-4 shadow-lg">
-            Nuestros Servicios
-          </span>
-          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mt-6 mb-6 bg-gradient-to-r from-slate-900 via-blue-900 to-slate-900 bg-clip-text text-transparent">
-            Lo Que Hacemos Mejor
-          </h2>
-          <p className="text-lg sm:text-xl lg:text-2xl text-gray-600 max-w-3xl mx-auto px-4 leading-relaxed">
+      <div
+        className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-16 py-20 pt-24 sm:pt-20 lg:py-28"
+        style={{
+          opacity: sectionVisible ? 1 : 0,
+          transform: sectionVisible ? 'translateY(0)' : 'translateY(40px)',
+          transition: 'opacity 0.8s ease, transform 0.8s ease',
+        }}
+      >
+        {/* ── Header ── */}
+        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10">
+          <div>
+            <div
+              className="inline-flex items-center gap-2 mb-4 px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-[0.2em]"
+              style={{ background: 'rgba(37,99,235,0.12)', border: '1px solid rgba(37,99,235,0.25)', color: '#2563eb' }}
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-blue-600 animate-pulse" />
+              Nuestros Servicios
+            </div>
+            <h2
+              className="font-black leading-[0.9]"
+              style={{ fontSize: 'clamp(2rem, 5vw, 4.5rem)', color: '#111827', letterSpacing: '-0.03em' }}
+            >
+              Cada Obra,<br />
+              Una Historia
+            </h2>
+          </div>
+          <p className="text-gray-500 text-base max-w-xs leading-relaxed sm:text-right">
             Soluciones integrales de construcción con los más altos estándares de calidad
           </p>
         </div>
 
-        {filteredServices.length === 0 && searchQuery && (
-          <div className="text-center py-12">
-            <p className="text-gray-500 text-lg">No se encontraron servicios que coincidan con "{searchQuery}"</p>
+        {filteredServices.length === 0 && searchQuery ? (
+          <div className="text-center py-20">
+            <p className="text-gray-500 text-lg">No se encontraron servicios para &quot;{searchQuery}&quot;</p>
           </div>
-        )}
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredServices.map((service, index) => (
+        ) : active && (
+          <>
+            {/* ══ SPOTLIGHT: large hero image ══ */}
             <div
-              key={index}
-              ref={(el) => { cardRefs.current[index] = el; }}
-              onMouseEnter={() => setHoveredIndex(index)}
-              onMouseLeave={() => setHoveredIndex(null)}
-              className={`group relative transition-all duration-700 ${visibleCards[index] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
-                }`}
-              style={{ transitionDelay: `${index * 50}ms` }}
+              className="relative w-full rounded-3xl overflow-hidden mb-8"
+              style={{ height: 'clamp(420px, 65vh, 720px)' }}
+              key={activeNum}
             >
-              {/* Card container - SIN efectos de color */}
-              <div className="relative h-full p-8 bg-white rounded-3xl border-2 border-gray-200 hover:border-gray-300 transition-all duration-500 overflow-hidden hover:shadow-xl hover:-translate-y-1">
+              {/* Background image */}
+              <img
+                src={active.image}
+                alt={active.title}
+                className="absolute inset-0 w-full h-full object-cover transition-all duration-700"
+                style={{ zIndex: 1 }}
+                onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+              />
 
-                <div className="relative">
-                  {/* Icon - SIN efectos de color en hover */}
-                  <div className={`relative w-20 h-20 mb-6 rounded-2xl bg-gradient-to-br ${service.color} p-4 transform group-hover:scale-105 transition-all duration-500 shadow-lg`}>
-                    <div className="text-white">
-                      {service.icon}
-                    </div>
-                  </div>
+              {/* Placeholder (shown when image missing) */}
+              <div
+                className="absolute inset-0 flex flex-col items-center justify-center gap-3"
+                style={{ background: 'linear-gradient(135deg, #e8e3dc 0%, #d6cfc5 100%)', zIndex: 0 }}
+              >
+                <div className="w-16 h-16 opacity-20" style={{ color: '#2563eb' }}>{active.icon}</div>
+                <span className="text-sm font-semibold text-gray-400">Agregar imagen: {active.image}</span>
+              </div>
 
-                  {/* Title - SIN cambio de color en hover */}
-                  <h3 className="text-2xl font-bold mb-4 text-gray-900 transition-all duration-300">
-                    {highlightText(service.title)}
-                  </h3>
+              {/* Gradient overlays */}
+              <div
+                className="absolute inset-0 z-[1] pointer-events-none"
+                style={{
+                  background: 'linear-gradient(to right, rgba(0,0,0,0.78) 0%, rgba(0,0,0,0.55) 35%, rgba(0,0,0,0.15) 65%, transparent 100%)',
+                }}
+              />
+              <div
+                className="absolute bottom-0 left-0 right-0 h-32 z-[1] pointer-events-none"
+                style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 100%)' }}
+              />
 
-                  {/* Description */}
-                  <p className="text-gray-600 mb-6 leading-relaxed">
-                    {highlightText(service.description)}
-                  </p>
+              {/* Big number watermark */}
+              <div
+                className="absolute top-6 right-8 select-none pointer-events-none font-black leading-none z-[2]"
+                style={{ fontSize: 'clamp(80px, 14vw, 160px)', color: 'rgba(255,255,255,0.07)', letterSpacing: '-0.05em' }}
+              >
+                0{activeNum + 1}
+              </div>
 
-                  {/* Features */}
-                  <ul className="space-y-3 mb-6">
-                    {service.features.map((feature, featureIndex) => (
-                      <li
-                        key={featureIndex}
-                        className="flex items-center gap-3 text-sm text-gray-700 group/item"
-                      >
-                        <div className={`flex-shrink-0 w-6 h-6 rounded-full bg-gradient-to-br ${service.color} flex items-center justify-center transform group-hover/item:scale-110 transition-transform duration-300`}>
-                          <svg
-                            className="w-4 h-4 text-white"
-                            fill="currentColor"
-                            viewBox="0 0 20 20"
-                          >
-                            <path
-                              fillRule="evenodd"
-                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                              clipRule="evenodd"
-                            />
-                          </svg>
-                        </div>
-                        <span className="group-hover/item:translate-x-1 transition-transform duration-300">
-                          {highlightText(feature)}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
+              {/* Content overlay */}
+              <div className="absolute inset-0 z-[2] flex flex-col justify-end p-8 sm:p-10 md:p-12 md:w-[60%]">
+                {/* Tag */}
+                <span
+                  className="inline-flex self-start items-center gap-1.5 text-xs font-bold uppercase tracking-[0.18em] px-3 py-1.5 rounded-full mb-4"
+                  style={{ background: 'rgba(37,99,235,0.25)', border: '1px solid rgba(37,99,235,0.5)', color: '#93c5fd' }}
+                >
+                  <span className="w-1 h-1 rounded-full bg-blue-400" />
+                  {active.tag}
+                </span>
 
-                  {/* CTA Link - Ahora clickeable */}
-                  <button
-                    onClick={() => setSelectedService(index)}
-                    className="flex items-center gap-2 text-sm font-bold text-blue-600 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 hover:gap-3"
-                  >
-                    Más información
-                    <svg
-                      className="w-4 h-4 text-blue-600 transition-transform duration-300"
-                      fill="none"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2.5"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
+                {/* Title */}
+                <h3
+                  className="font-black text-white leading-tight mb-3"
+                  style={{ fontSize: 'clamp(1.6rem, 3.5vw, 2.8rem)', letterSpacing: '-0.02em', textShadow: '0 2px 20px rgba(0,0,0,0.4)' }}
+                >
+                  {active.title}
+                </h3>
+
+                {/* Description */}
+                <p className="text-white/75 text-sm sm:text-base leading-relaxed mb-5 max-w-md">
+                  {highlightText(active.description)}
+                </p>
+
+                {/* Features */}
+                <div className="flex flex-wrap gap-2">
+                  {active.features.map((f, fi) => (
+                    <span
+                      key={fi}
+                      className="flex items-center gap-1.5 text-xs sm:text-sm px-3 py-1.5 rounded-full font-medium"
+                      style={{ background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.2)', color: 'rgba(255,255,255,0.85)', backdropFilter: 'blur(8px)' }}
                     >
-                      <path d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-                    </svg>
-                  </button>
+                      <span className="w-1 h-1 rounded-full flex-shrink-0 bg-blue-400" />
+                      {f}
+                    </span>
+                  ))}
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
-      </div>
 
-      {/* Modal */}
-      {selectedService !== null && (
-        <div
-          className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in lg:pl-80"
-          onClick={() => setSelectedService(null)}
-        >
-          <div
-            className="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl animate-scale-in"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Modal Header */}
-            <div className={`relative p-8 bg-gradient-to-br ${filteredServices[selectedService].color} text-white`}>
+              {/* Prev / Next arrows */}
               <button
-                onClick={() => setSelectedService(null)}
-                className="absolute top-4 right-4 w-10 h-10 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition-colors duration-300"
+                onClick={() => setActiveIndex((activeNum - 1 + filteredServices.length) % filteredServices.length)}
+                className="absolute left-3 sm:left-4 top-4 sm:top-1/2 sm:-translate-y-1/2 z-[3] w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-110"
+                style={{ background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.25)', backdropFilter: 'blur(8px)', color: '#fff' }}
               >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M19 12H5M12 5l-7 7 7 7" />
                 </svg>
               </button>
-
-              <div className="flex items-center gap-4 mb-4">
-                <div className="w-16 h-16 bg-white/20 backdrop-blur-md rounded-2xl p-3 flex items-center justify-center">
-                  {filteredServices[selectedService].icon}
-                </div>
-                <h3 className="text-3xl font-black">{filteredServices[selectedService].title}</h3>
-              </div>
+              <button
+                onClick={() => setActiveIndex((activeNum + 1) % filteredServices.length)}
+                className="absolute right-3 sm:right-4 top-4 sm:top-1/2 sm:-translate-y-1/2 z-[3] w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-110"
+                style={{ background: 'rgba(37,99,235,0.7)', border: '1px solid rgba(37,99,235,0.8)', backdropFilter: 'blur(8px)', color: '#fff' }}
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </button>
             </div>
 
-            {/* Modal Body */}
-            <div className="p-8">
-              <p className="text-gray-700 text-lg leading-relaxed mb-6">
-                {filteredServices[selectedService].description}
-              </p>
+            {/* ══ THUMBNAIL STRIP ══ */}
+            <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 sm:gap-3 mt-6">
+              {filteredServices.map((service, index) => {
+                const isActive = index === activeNum;
+                return (
+                  <button
+                    key={index}
+                    onClick={() => setActiveIndex(index)}
+                    className="relative rounded-2xl overflow-hidden group focus:outline-none"
+                    style={{ aspectRatio: '4/3' }}
+                  >
+                    {/* Thumbnail image */}
+                    <img
+                      src={service.image}
+                      alt={service.title}
+                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      style={{ zIndex: 1 }}
+                      onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                    />
 
-              <h4 className="text-xl font-bold text-gray-900 mb-4">Características principales:</h4>
-              <ul className="space-y-3 mb-8">
-                {filteredServices[selectedService].features.map((feature, idx) => (
-                  <li key={idx} className="flex items-start gap-3 text-gray-700">
-                    <div className={`flex-shrink-0 w-6 h-6 rounded-full bg-gradient-to-br ${filteredServices[selectedService].color} flex items-center justify-center mt-0.5`}>
-                      <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                      </svg>
+                    {/* Placeholder */}
+                    <div
+                      className="absolute inset-0 flex items-center justify-center"
+                      style={{ background: isActive ? 'rgba(37,99,235,0.12)' : '#e8e3dc', zIndex: 0 }}
+                    >
+                      <div className="w-6 h-6 opacity-30" style={{ color: '#2563eb' }}>{service.icon}</div>
                     </div>
-                    <span className="leading-relaxed">{feature}</span>
-                  </li>
-                ))}
-              </ul>
 
-              <div className="flex gap-4">
-                <button
-                  className={`flex-1 px-6 py-3 bg-gradient-to-r ${filteredServices[selectedService].color} text-white rounded-xl font-bold hover:shadow-lg transition-all duration-300 hover:scale-105`}
-                >
-                  Solicitar cotización
-                </button>
-                <button
-                  onClick={() => setSelectedService(null)}
-                  className="px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-xl font-bold hover:border-gray-400 transition-all duration-300"
-                >
-                  Cerrar
-                </button>
-              </div>
+                    {/* Overlay */}
+                    <div
+                      className="absolute inset-0 z-[1] transition-all duration-300"
+                      style={{
+                        background: isActive
+                          ? 'linear-gradient(to top, rgba(37,99,235,0.75) 0%, rgba(0,0,0,0.3) 100%)'
+                          : 'linear-gradient(to top, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.2) 100%)',
+                      }}
+                    />
+
+                    {/* Active orange bottom bar */}
+                    <div
+                      className="absolute bottom-0 left-0 right-0 h-0.5 z-[3] transition-all duration-300"
+                      style={{ background: isActive ? '#2563eb' : 'transparent' }}
+                    />
+
+                    {/* Service title */}
+                    <div className="absolute inset-0 z-[2] flex flex-col justify-end p-2.5">
+                      <span
+                        className="text-white font-bold leading-tight"
+                        style={{ fontSize: 'clamp(9px, 1.2vw, 11px)', textShadow: '0 1px 4px rgba(0,0,0,0.5)' }}
+                      >
+                        {service.title}
+                      </span>
+                      <span
+                        className="text-white/60 font-mono mt-0.5"
+                        style={{ fontSize: '9px' }}
+                      >
+                        0{index + 1}
+                      </span>
+                    </div>
+
+                    {/* Active ring */}
+                    {isActive && (
+                      <div
+                        className="absolute inset-0 z-[4] rounded-2xl pointer-events-none"
+                        style={{ border: '2px solid #2563eb' }}
+                      />
+                    )}
+                  </button>
+                );
+              })}
             </div>
-          </div>
-        </div>
-      )}
+          </>
+        )}
+      </div>
     </section>
   );
 }

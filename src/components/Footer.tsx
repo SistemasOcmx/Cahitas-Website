@@ -2,7 +2,7 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 text-gray-200 relative transition-all duration-300" style={{ marginLeft: 'calc(var(--sidebar-width, 0px) * -1)', paddingLeft: 'var(--sidebar-width, 0px)' }}>
+    <footer className="text-gray-200 relative transition-all duration-300" style={{ background: '#0a1628', marginLeft: 'calc(var(--sidebar-width, 0px) * -1)', paddingLeft: 'var(--sidebar-width, 0px)' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-16 relative z-10">
         {/* Main Footer Content */}
         <div className="space-y-8 mb-12 md:space-y-0">
@@ -12,13 +12,13 @@ export default function Footer() {
             <div className="text-center">
               <div className="flex items-center gap-2 mb-4 justify-center">
                 <div className="w-10 h-10 rounded-full overflow-hidden">
-                  <img src="/img/Logo.jpeg" alt="Logo" className="w-full h-full object-cover" />
+                  <img src="/img/logo_blanco_negro.png" alt="Logo" className="w-full h-full object-cover" />
                 </div>
-                <span className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
+                <span className="text-2xl font-bold" style={{ color: '#2563eb' }}>
                   Cahita Constructora
                 </span>
               </div>
-              <p className="text-gray-400 mb-6 leading-relaxed max-w-3xl mx-auto">
+              <p className="text-gray-400 mb-6 leading-relaxed max-w-3xl mx-auto text-justify">
                 Empresa constructora líder comprometida con la excelencia en cada proyecto. Ofrecemos soluciones integrales de construcción con los más altos estándares de calidad.
               </p>
             </div>
@@ -30,19 +30,19 @@ export default function Footer() {
                 <h3 className="text-lg font-bold mb-4 text-white">Servicios</h3>
                 <ul className="space-y-3">
                   {[
-                    'Servicio 1',
-                    'Servicio 2',
-                    'Servicio 3',
-                    'Servicio 4',
-                    'Servicio 5',
+                    { label: 'Servicio 1', href: '#servicios' },
+                    { label: 'Servicio 2', href: '#servicios' },
+                    { label: 'Servicio 3', href: '#servicios' },
+                    { label: 'Servicio 4', href: '#servicios' },
+                    { label: 'Servicio 5', href: '#servicios' },
                   ].map((service, index) => (
                     <li key={index}>
                       <a
-                        href="#"
+                        href={service.href}
                         className="text-gray-400 hover:text-blue-400 transition-colors duration-300 flex items-center gap-2 group text-sm"
                       >
                         <span className="w-1.5 h-1.5 bg-blue-500 rounded-full group-hover:scale-150 transition-transform" />
-                        {service}
+                        {service.label}
                       </a>
                     </li>
                   ))}
@@ -54,19 +54,19 @@ export default function Footer() {
                 <h3 className="text-lg font-bold mb-4 text-white">Experiencia</h3>
                 <ul className="space-y-3">
                   {[
-                    'Experiencia 1',
-                    'Experiencia 2',
-                    'Experiencia 3',
-                    'Experiencia 4',
-                    'Experiencia 5',
+                    { label: 'Experiencia 1', href: '#experiencia' },
+                    { label: 'Experiencia 2', href: '#experiencia' },
+                    { label: 'Experiencia 3', href: '#experiencia' },
+                    { label: 'Experiencia 4', href: '#experiencia' },
+                    { label: 'Experiencia 5', href: '#experiencia' },
                   ].map((item, index) => (
                     <li key={index}>
                       <a
-                        href="#"
+                        href={item.href}
                         className="text-gray-400 hover:text-blue-400 transition-colors duration-300 flex items-center gap-2 group text-sm"
                       >
                         <span className="w-1.5 h-1.5 bg-cyan-500 rounded-full group-hover:scale-150 transition-transform" />
-                        {item}
+                        {item.label}
                       </a>
                     </li>
                   ))}
@@ -113,11 +113,11 @@ export default function Footer() {
                 <div className="w-10 h-10 rounded-full overflow-hidden">
                   <img src="/img/Logo.jpeg" alt="Logo" className="w-full h-full object-cover" />
                 </div>
-                <span className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
+                <span className="text-2xl font-bold" style={{ color: '#2563eb' }}>
                   Cahita Constructora
                 </span>
               </div>
-              <p className="text-gray-400 mb-6 leading-relaxed">
+              <p className="text-gray-400 mb-6 leading-relaxed text-justify">
                 Empresa constructora líder comprometida con la excelencia en cada proyecto. Ofrecemos soluciones integrales de construcción con los más altos estándares de calidad.
               </p>
             </div>
@@ -127,19 +127,20 @@ export default function Footer() {
               <h3 className="text-lg font-bold mb-4 text-white">Servicios</h3>
               <ul className="space-y-3">
                 {[
-                  'Servicio 1',
-                  'Servicio 2',
-                  'Servicio 3',
-                  'Servicio 4',
-                  'Servicio 5',
+                  { label: 'Construcción Residencial', href: '/Services.tsx' },
+                  { label: 'Proyectos Comerciales', href: '#servicios' },
+                  { label: 'Remodelación', href: '#servicios' },
+                  { label: 'Diseño Arquitectónico', href: '#servicios' },
+                  { label: 'Supervisión de Obra', href: '#servicios' },
+                  { label: 'Consultoría en Construcción', href: '#servicios' },
                 ].map((service, index) => (
                   <li key={index}>
                     <a
-                      href="#"
+                      href={service.href}
                       className="text-gray-400 hover:text-blue-400 transition-colors duration-300 flex items-center gap-2 group text-sm"
                     >
                       <span className="w-1.5 h-1.5 bg-blue-500 rounded-full group-hover:scale-150 transition-transform" />
-                      {service}
+                      {service.label}
                     </a>
                   </li>
                 ))}
@@ -151,19 +152,18 @@ export default function Footer() {
               <h3 className="text-lg font-bold mb-4 text-white">Experiencia</h3>
               <ul className="space-y-3">
                 {[
-                  'Experiencia 1',
-                  'Experiencia 2',
-                  'Experiencia 3',
-                  'Experiencia 4',
-                  'Experiencia 5',
+                  { label: 'Expansión Regional', href: '#experiencia' },
+                  { label: 'Innovación Tecnológica', href: '#experiencia' },
+                  { label: 'Crecimiento Sostenido', href: '#experiencia' },
+                  { label: 'Fundación', href: '#experiencia' },
                 ].map((item, index) => (
                   <li key={index}>
                     <a
-                      href="#"
+                      href={item.href}
                       className="text-gray-400 hover:text-blue-400 transition-colors duration-300 flex items-center gap-2 group text-sm"
                     >
                       <span className="w-1.5 h-1.5 bg-cyan-500 rounded-full group-hover:scale-150 transition-transform" />
-                      {item}
+                      {item.label}
                     </a>
                   </li>
                 ))}

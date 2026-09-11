@@ -46,7 +46,7 @@ export default function About({ searchQuery = '' }: AboutProps) {
     {
       title: 'Innovación',
       description: 'Buscamos constantemente nuevas formas de resolver problemas y crear valor',
-      color: 'from-blue-500 to-cyan-500',
+      color: 'from-teal-500 to-emerald-500',
       icon: (
         <svg className="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
@@ -56,7 +56,7 @@ export default function About({ searchQuery = '' }: AboutProps) {
     {
       title: 'Colaboración',
       description: 'Trabajamos en equipo con nuestros clientes para lograr objetivos comunes',
-      color: 'from-cyan-500 to-teal-500',
+      color: 'from-teal-500 to-emerald-500',
       icon: (
         <svg className="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
@@ -76,7 +76,7 @@ export default function About({ searchQuery = '' }: AboutProps) {
     {
       title: 'Pasión',
       description: 'Amamos lo que hacemos y eso se refleja en nuestro trabajo',
-      color: 'from-sky-500 to-blue-500',
+      color: 'from-teal-500 to-emerald-500',
       icon: (
         <svg className="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
@@ -86,7 +86,7 @@ export default function About({ searchQuery = '' }: AboutProps) {
     {
       title: 'Integridad',
       description: 'Actuamos con transparencia y honestidad en todas nuestras relaciones',
-      color: 'from-indigo-500 to-blue-500',
+      color: 'from-teal-500 to-emerald-500',
       icon: (
         <svg className="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
@@ -96,7 +96,7 @@ export default function About({ searchQuery = '' }: AboutProps) {
     {
       title: 'Crecimiento',
       description: 'Fomentamos el desarrollo continuo tanto personal como profesional',
-      color: 'from-blue-600 to-cyan-600',
+      color: 'from-teal-500 to-emerald-500',
       icon: (
         <svg className="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
@@ -191,7 +191,7 @@ export default function About({ searchQuery = '' }: AboutProps) {
           <span className="inline-block px-4 py-2 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-full text-xs sm:text-sm font-bold uppercase tracking-wider mb-4 shadow-lg">
             Quiénes Somos
           </span>
-          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mt-6 mb-6 bg-gradient-to-r from-slate-900 via-blue-900 to-slate-900 bg-clip-text text-transparent">
+          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mt-6 mb-6 text-gray-900">
             Nosotros
           </h2>
           <p className="text-lg sm:text-xl lg:text-2xl text-gray-600 max-w-3xl mx-auto px-4 leading-relaxed">
@@ -209,24 +209,17 @@ export default function About({ searchQuery = '' }: AboutProps) {
         {hasMatch && (
           <>
             <div className="flex justify-center mb-12 px-4">
-              <div className="relative inline-flex bg-white/80 backdrop-blur-md rounded-full p-2 shadow-xl border border-gray-200">
-                {/* Animated indicator */}
-                <div
-                  className="absolute top-2 h-[calc(100%-16px)] bg-gradient-to-r from-blue-600 to-cyan-600 rounded-full transition-all duration-300 shadow-lg"
-                  style={{
-                    width: `calc(${100 / tabs.length}% - 8px)`,
-                    left: `calc(${tabs.findIndex(t => t.id === activeTab) * (100 / tabs.length)}% + 8px)`,
-                  }}
-                />
+              <div className="inline-flex flex-wrap justify-center bg-white/80 backdrop-blur-md rounded-2xl p-2 shadow-xl border border-gray-200 gap-1">
 
                 {tabs.map((tab) => (
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
-                    className={`relative z-10 px-6 sm:px-8 lg:px-10 py-3 sm:py-4 rounded-full font-bold text-sm sm:text-base transition-all duration-300 flex items-center gap-2 ${activeTab === tab.id
-                        ? 'text-white'
+                    className={`relative z-10 px-4 sm:px-6 lg:px-10 py-2.5 sm:py-3 sm:py-4 rounded-xl font-bold text-sm sm:text-base transition-all duration-300 flex items-center gap-2 ${
+                      activeTab === tab.id
+                        ? 'text-white bg-gradient-to-r from-blue-600 to-cyan-600 shadow-lg'
                         : 'text-gray-600 hover:text-blue-600'
-                      }`}
+                    }`}
                   >
                     <span className={`transition-transform duration-300 ${activeTab === tab.id ? 'scale-110' : ''}`}>
                       {tab.icon}
@@ -243,20 +236,20 @@ export default function About({ searchQuery = '' }: AboutProps) {
               {activeTab === 'mision' && misionMatch && (
                 <div className="animate-fade-in">
                   <div className="max-w-4xl mx-auto">
-                    <div className="relative p-12 bg-white/80 backdrop-blur-md rounded-3xl shadow-2xl border border-blue-100 overflow-hidden">
+                    <div className="relative p-6 sm:p-12 bg-white/80 backdrop-blur-md rounded-3xl shadow-2xl border border-blue-100 overflow-hidden">
                       {/* Gradient overlay */}
                       <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 to-cyan-50/50" />
 
                       <div className="relative">
-                        <div className="flex items-center gap-4 mb-6">
-                          <div className="w-20 h-20 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center shadow-xl">
-                            <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div className="flex justify-center mb-4">
+                          <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center shadow-lg">
+                            <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                             </svg>
                           </div>
-                          <h3 className="text-4xl font-black bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">Nuestra Misión</h3>
                         </div>
-                        <p className="text-xl text-gray-700 leading-relaxed">
+                        <h3 className="text-4xl font-black mb-6 text-center" style={{ color: '#2563eb' }}>Nuestra Misión</h3>
+                        <p className="text-xl text-gray-700 leading-relaxed text-justify">
                           {highlightText(content.mision)}
                         </p>
                       </div>
@@ -269,21 +262,21 @@ export default function About({ searchQuery = '' }: AboutProps) {
               {activeTab === 'vision' && visionMatch && (
                 <div className="animate-fade-in">
                   <div className="max-w-4xl mx-auto">
-                    <div className="relative p-12 bg-white/80 backdrop-blur-md rounded-3xl shadow-2xl border border-cyan-100 overflow-hidden">
+                    <div className="relative p-6 sm:p-12 bg-white/80 backdrop-blur-md rounded-3xl shadow-2xl border border-cyan-100 overflow-hidden">
                       {/* Gradient overlay */}
                       <div className="absolute inset-0 bg-gradient-to-br from-cyan-50/50 to-teal-50/50" />
 
                       <div className="relative">
-                        <div className="flex items-center gap-4 mb-6">
-                          <div className="w-20 h-20 bg-gradient-to-r from-cyan-500 to-teal-500 rounded-2xl flex items-center justify-center shadow-xl">
-                            <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <div className="flex justify-center mb-4">
+                          <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center shadow-lg">
+                            <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                             </svg>
                           </div>
-                          <h3 className="text-4xl font-black bg-gradient-to-r from-cyan-600 to-teal-600 bg-clip-text text-transparent">Nuestra Visión</h3>
                         </div>
-                        <p className="text-xl text-gray-700 leading-relaxed">
+                        <h3 className="text-4xl font-black mb-6 text-center" style={{ color: '#2563eb' }}>Nuestra Visión</h3>
+                        <p className="text-xl text-gray-700 leading-relaxed text-justify">
                           {highlightText(content.vision)}
                         </p>
                       </div>
@@ -304,25 +297,25 @@ export default function About({ searchQuery = '' }: AboutProps) {
                           }`}
                         style={{ transitionDelay: `${index * 100}ms` }}
                       >
-                        <div className="relative h-full p-8 bg-white/80 backdrop-blur-md rounded-3xl border-2 border-gray-100 hover:border-transparent transition-all duration-500 overflow-hidden group-hover:shadow-2xl group-hover:-translate-y-2">
+                        <div className="relative h-full p-8 bg-white/80 backdrop-blur-md rounded-3xl border-2 border-gray-100 transition-all duration-500 overflow-hidden group-hover:shadow-2xl group-hover:-translate-y-2">
                           {/* Animated gradient border */}
-                          <div className={`absolute inset-0 bg-gradient-to-br ${valor.color} opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10 blur-xl`} />
+                          <div className={`absolute inset-0 bg-gradient-to-br ${valor.color} opacity-0 transition-opacity duration-500 -z-10 blur-xl`} />
 
                           <div className="relative">
                             {/* Icon */}
-                            <div className={`relative w-16 h-16 mb-6 rounded-2xl bg-gradient-to-br ${valor.color} p-3 transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-lg`}>
+                            <div className={`relative w-16 h-16 mb-6 mx-auto rounded-2xl bg-gradient-to-br ${valor.color} p-3 transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-lg`}>
                               <div className="text-white">
                                 {valor.icon}
                               </div>
                             </div>
 
                             {/* Title */}
-                            <h3 className="text-2xl font-bold mb-4 text-gray-900 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-cyan-600 group-hover:bg-clip-text transition-all duration-300">
+                            <h3 className="text-2xl font-bold mb-4 text-center text-gray-900 transition-all duration-300">
                               {highlightText(valor.title)}
                             </h3>
 
                             {/* Description */}
-                            <p className="text-gray-600 leading-relaxed">
+                            <p className="text-gray-600 leading-relaxed text-justify">
                               {highlightText(valor.description)}
                             </p>
                           </div>
@@ -337,24 +330,21 @@ export default function About({ searchQuery = '' }: AboutProps) {
             {/* Stats Section */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
               {[
-                { value: '4+', label: 'Años de Experiencia', icon: '📅', color: 'from-blue-500 to-cyan-500' },
-                { value: '100+', label: 'Proyectos Completados', icon: '✅', color: 'from-cyan-500 to-teal-500' },
-                { value: '50+', label: 'Clientes Satisfechos', icon: '😊', color: 'from-teal-500 to-emerald-500' },
-                { value: '15+', label: 'Premios Ganados', icon: '🏆', color: 'from-emerald-500 to-blue-500' },
+                { value: '4+', label: 'Años de Experiencia' },
+                { value: '100+', label: 'Proyectos Completados' },
+                { value: '50+', label: 'Clientes Satisfechos' },
+                { value: '15+', label: 'Premios Ganados' },
               ].map((stat, index) => (
                 <div
                   key={index}
-                  className="group relative text-center p-8 bg-white/80 backdrop-blur-md rounded-3xl border-2 border-gray-100 hover:border-transparent hover:scale-105 transition-all duration-500 shadow-lg hover:shadow-2xl overflow-hidden"
+                  className="group relative text-center p-6 bg-white/80 backdrop-blur-md rounded-3xl border-2 border-gray-100 hover:border-green-200 hover:scale-105 transition-all duration-500 shadow-lg hover:shadow-2xl overflow-hidden"
                 >
-                  {/* Gradient background on hover */}
-                  <div className={`absolute inset-0 bg-gradient-to-br ${stat.color} opacity-0 group-hover:opacity-10 transition-opacity duration-500`} />
-
+                  <div className="absolute inset-0 bg-gradient-to-br from-green-50 to-emerald-50 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   <div className="relative">
-                    <div className="text-5xl mb-3">{stat.icon}</div>
-                    <div className={`text-5xl font-black bg-gradient-to-r ${stat.color} bg-clip-text text-transparent mb-2`}>
+                    <div className="text-3xl font-black text-gray-900 mb-1">
                       {stat.value}
                     </div>
-                    <div className="text-sm font-medium text-gray-600">
+                    <div className="text-xs font-medium text-gray-500">
                       {stat.label}
                     </div>
                   </div>

@@ -1,0 +1,344 @@
+warning: in the working copy of 'src/components/Hero.tsx', LF will be replaced by CRLF the next time Git touches it
+[1mdiff --git a/src/components/Hero.tsx b/src/components/Hero.tsx[m
+[1mindex 8d75191..f94427f 100644[m
+[1m--- a/src/components/Hero.tsx[m
+[1m+++ b/src/components/Hero.tsx[m
+[36m@@ -1,58 +1,49 @@[m
+[31m-'use client';[m
+[32m+[m[32m﻿'use client';[m
+ [m
+ import { useEffect, useState } from 'react';[m
+ [m
+ interface HeroProps {[m
+   searchQuery?: string;[m
+[32m+[m[32m  onNavigate?: (page: string) => void;[m
+ }[m
+ [m
+[31m-export default function Hero({ searchQuery = '' }: HeroProps) {[m
+[31m-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });[m
+[31m-  const [particles, setParticles] = useState<Array<{ id: number; x: number; y: number; size: number; duration: number }>>([]);[m
+[32m+[m[32mexport default function Hero({ searchQuery = '', onNavigate }: HeroProps) {[m
+[32m+[m[32m  const [isVisible, setIsVisible] = useState(false);[m
+[32m+[m
+[32m+[m[32m  const [mousePos, setMousePos] = useState({ x: 50, y: 50 });[m
+ [m
+   const content = {[m
+[31m-    badge: '✨ Bienvenido a Cahita Constructora',[m
+[32m+[m[32m    badge: 'Construyendo desde 2021',[m
+     title: 'Construyendo Tus Sueños con Excelencia',[m
+     description: 'Somos una empresa constructora comprometida con la calidad y la innovación. Transformamos tus proyectos en realidades sólidas con los más altos estándares de construcción.',[m
+     button1: 'Explorar Servicios',[m
+[31m-    button2: 'Contactar Ahora'[m
+[32m+[m[32m    button2: 'Contactar Ahora',[m
+   };[m
+ [m
+[31m-  // Generar partículas flotantes[m
+   useEffect(() => {[m
+[31m-    const newParticles = Array.from({ length: 30 }, (_, i) => ({[m
+[31m-      id: i,[m
+[31m-      x: Math.random() * 100,[m
+[31m-      y: Math.random() * 100,[m
+[31m-      size: Math.random() * 4 + 2,[m
+[31m-      duration: Math.random() * 10 + 15,[m
+[31m-    }));[m
+[31m-    setParticles(newParticles);[m
+[32m+[m[32m    setIsVisible(true);[m
+   }, []);[m
+ [m
+[31m-  // Seguir el mouse para efecto parallax[m
+   useEffect(() => {[m
+     const handleMouseMove = (e: MouseEvent) => {[m
+[31m-      setMousePosition({[m
+[31m-        x: (e.clientX / window.innerWidth - 0.5) * 20,[m
+[31m-        y: (e.clientY / window.innerHeight - 0.5) * 20,[m
+[32m+[m[32m      setMousePos({[m
+[32m+[m[32m        x: (e.clientX / window.innerWidth) * 100,[m
+[32m+[m[32m        y: (e.clientY / window.innerHeight) * 100,[m
+       });[m
+     };[m
+[31m-[m
+     window.addEventListener('mousemove', handleMouseMove);[m
+     return () => window.removeEventListener('mousemove', handleMouseMove);[m
+   }, []);[m
+ [m
+[31m-  // Función para resaltar texto[m
+   const highlightText = (text: string) => {[m
+     if (!searchQuery) return text;[m
+[31m-[m
+[31m-    const parts = text.split(new RegExp(`(${searchQuery})`, 'gi'));[m
+[32m+[m[32m    const escaped = searchQuery.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');[m
+[32m+[m[32m    const parts = text.split(new RegExp(`(${escaped})`, 'gi'));[m
+     return ([m
+       <>[m
+         {parts.map((part, index) =>[m
+           part.toLowerCase() === searchQuery.toLowerCase() ? ([m
+[31m-            <mark key={index} className="bg-yellow-300 text-gray-900 px-1 rounded">{part}</mark>[m
+[32m+[m[32m            <mark key={index} className="bg-amber-400 text-gray-900 px-1 rounded">{part}</mark>[m
+           ) : ([m
+             <span key={index}>{part}</span>[m
+           )[m
+[36m@@ -61,19 +52,15 @@[m [mexport default function Hero({ searchQuery = '' }: HeroProps) {[m
+     );[m
+   };[m
+ [m
+[31m-  // Verificar si hay coincidencias con la búsqueda[m
+   const hasMatch = !searchQuery || Object.values(content).some(text =>[m
+     text.toLowerCase().includes(searchQuery.toLowerCase())[m
+   );[m
+ [m
+   if (!hasMatch && searchQuery) {[m
+     return ([m
+[31m-      <section[m
+[31m-        id="inicio"[m
+[31m-        className="relative min-h-screen flex items-center justify-center bg-white py-12 sm:py-16 md:py-20"[m
+[31m-      >[m
+[32m+[m[32m      <section id="inicio" className="relative min-h-screen flex items-center justify-center bg-white">[m
+         <div className="text-center py-12">[m
+[31m-          <p className="text-gray-500 text-lg">No se encontraron resultados para "{searchQuery}"</p>[m
+[32m+[m[32m          <p className="text-gray-500 text-lg">No se encontraron resultados para &quot;{searchQuery}&quot;</p>[m
+         </div>[m
+       </section>[m
+     );[m
+[36m@@ -82,139 +69,227 @@[m [mexport default function Hero({ searchQuery = '' }: HeroProps) {[m
+   return ([m
+     <section[m
+       id="inicio"[m
+[31m-      className="relative min-h-screen flex items-center justify-center bg-slate-900 overflow-hidden py-12 sm:py-16 md:py-20"[m
+[32m+[m[32m      className="relative min-h-screen overflow-hidden flex flex-col"[m
+     >[m
+[31m-      {/* Background Image with Parallax - Posicionada a la izquierda */}[m
+[32m+[m[32m      {/* ── Full-bleed background image ── */}[m
+[32m+[m[32m      <img[m
+[32m+[m[32m        src="/img/fondo.png"[m
+[32m+[m[32m        alt="Obras de construcción"[m
+[32m+[m[32m        className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none select-none"[m
+[32m+[m[32m        style={{ objectPosition: '58% center' }}[m
+[32m+[m[32m      />[m
+[32m+[m
+[32m+[m[32m      {/* ── Gradient layers over image ── */}[m
+[32m+[m[32m      {/* Left white wash: solid white left → fades to transparent right */}[m
+       <div[m
+[31m-        className="absolute inset-0 z-0 transition-transform duration-300 ease-out"[m
+[32m+[m[32m        className="absolute inset-0 z-[1] pointer-events-none"[m
+         style={{[m
+[31m-          transform: `translate(${mousePosition.x}px, ${mousePosition.y}px) scale(1.1)`,[m
+[32m+[m[32m          background:[m
+[32m+[m[32m            'linear-gradient(100deg, #ffffff 0%, #ffffff 26%, rgba(255,255,255,0.94) 38%, rgba(255,255,255,0.6) 52%, rgba(255,255,255,0.15) 68%, transparent 82%)',[m
+         }}[m
+[31m-      >[m
+[31m-        <img[m
+[31m-          src="/img/fondo.png"[m
+[31m-          alt="Background"[m
+[31m-          className="w-full h-full object-cover opacity-70"[m
+[31m-          style={{ objectPosition: '35% center' }}[m
+[31m-        />[m
+[31m-      </div>[m
+[32m+[m[32m      />[m
+[32m+[m[32m      {/* Top softener */}[m
+[32m+[m[32m      <div[m
+[32m+[m[32m        className="absolute top-0 left-0 right-0 h-48 z-[1] pointer-events-none"[m
+[32m+[m[32m        style={{ background: 'linear-gradient(to bottom, rgba(255,255,255,0.5) 0%, transparent 100%)' }}[m
+[32m+[m[32m      />[m
+[32m+[m[32m      {/* Bottom dark scrim for stats bar readability */}[m
+[32m+[m[32m      <div[m
+[32m+[m[32m        className="absolute bottom-0 left-0 right-0 z-[1] pointer-events-none"[m
+[32m+[m[32m        style={{ height: '240px', background: 'linear-gradient(to top, rgba(8,12,20,0.72) 0%, rgba(8,12,20,0.2) 55%, transparent 100%)' }}[m
+[32m+[m[32m      />[m
+[32m+[m
+[32m+[m[32m      {/* ── Orange top accent bar ── */}[m
+[32m+[m[32m      <div[m
+[32m+[m[32m        className="absolute top-0 left-0 right-0 h-1 z-30 pointer-events-none"[m
+[32m+[m[32m        style={{ background: 'linear-gradient(to right, #2563eb 0%, #06b6d4 50%, #2563eb 100%)' }}[m
+[32m+[m[32m      />[m
+[32m+[m
+[32m+[m[32m      {/* ── Dot grid (subtle, only visible over white zone) ── */}[m
+[32m+[m[32m      <div[m
+[32m+[m[32m        className="absolute inset-0 z-[2] pointer-events-none"[m
+[32m+[m[32m        style={{[m
+[32m+[m[32m          backgroundImage: 'radial-gradient(circle, rgba(0,0,0,0.045) 1px, transparent 1px)',[m
+[32m+[m[32m          backgroundSize: '40px 40px',[m
+[32m+[m[32m        }}[m
+[32m+[m[32m      />[m
+ [m
+[31m-      {/* Gradient Overlay - Más sutil */}[m
+[31m-      <div className="absolute inset-0 bg-gradient-to-b from-blue-900/40 via-slate-900/30 to-slate-900/60 z-[1]" />[m
+[32m+[m[32m      {/* ── Mouse-tracking glow ── */}[m
+[32m+[m[32m      <div[m
+[32m+[m[32m        className="absolute pointer-events-none z-[2]"[m
+[32m+[m[32m        style={{[m
+[32m+[m[32m          width: '700px',[m
+[32m+[m[32m          height: '700px',[m
+[32m+[m[32m          borderRadius: '50%',[m
+[32m+[m[32m          background: 'radial-gradient(circle, rgba(37,99,235,0.05) 0%, transparent 65%)',[m
+[32m+[m[32m          left: `${mousePos.x}%`,[m
+[32m+[m[32m          top: `${mousePos.y}%`,[m
+[32m+[m[32m          transform: 'translate(-50%, -50%)',[m
+[32m+[m[32m          transition: 'left 1.6s ease-out, top 1.6s ease-out',[m
+[32m+[m[32m        }}[m
+[32m+[m[32m      />[m
+[32m+[m
+[32m+[m[32m      {/* ══ MAIN CONTENT ══ */}[m
+[32m+[m[32m      <div className="relative z-10 flex-1 flex flex-col justify-center px-6 sm:px-12 lg:px-16 xl:px-24 pt-20 sm:pt-24 pb-12">[m
+ [m
+[31m-      {/* Animated Particles */}[m
+[31m-      <div className="absolute inset-0 z-[2] overflow-hidden">[m
+[31m-        {particles.map((particle) => ([m
+[32m+[m[32m        {/* Text block — left-anchored, max-w so it sits over the white gradient zone */}[m
+[32m+[m[32m        <div className="w-full max-w-[600px]">[m
+[32m+[m
+[32m+[m[32m          {/* Badge */}[m
+           <div[m
+[31m-            key={particle.id}[m
+[31m-            className="absolute rounded-full bg-blue-400/30 blur-sm animate-float"[m
+[32m+[m[32m            className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full mb-7"[m
+             style={{[m
+[31m-              left: `${particle.x}%`,[m
+[31m-              top: `${particle.y}%`,[m
+[31m-              width: `${particle.size}px`,[m
+[31m-              height: `${particle.size}px`,[m
+[31m-              animationDuration: `${particle.duration}s`,[m
+[31m-              animationDelay: `${Math.random() * 5}s`,[m
+[32m+[m[32m              background: 'rgba(37,99,235,0.07)',[m
+[32m+[m[32m              border: '1px solid rgba(37,99,235,0.22)',[m
+[32m+[m[32m              opacity: isVisible ? 1 : 0,[m
+[32m+[m[32m              transform: isVisible ? 'translateY(0)' : 'translateY(12px)',[m
+[32m+[m[32m              transition: 'opacity 0.6s ease 0.05s, transform 0.6s ease 0.05s',[m
+             }}[m
+[31m-          />[m
+[31m-        ))}[m
+[31m-      </div>[m
+[32m+[m[32m          >[m
+[32m+[m[32m            <span[m
+[32m+[m[32m              className="w-1.5 h-1.5 rounded-full bg-blue-600 flex-shrink-0"[m
+[32m+[m[32m              style={{ boxShadow: '0 0 8px rgba(37,99,235,0.9)', animation: 'pulse 2s ease-in-out infinite' }}[m
+[32m+[m[32m            />[m
+[32m+[m[32m            <span className="text-blue-600 text-xs font-bold uppercase tracking-[0.22em]">[m
+[32m+[m[32m              {highlightText(content.badge)}[m
+[32m+[m[32m            </span>[m
+[32m+[m[32m          </div>[m
+ [m
+[31m-      {/* Glowing Orbs */}[m
+[31m-      <div className="absolute top-20 left-10 w-72 h-72 bg-blue-500/20 rounded-full blur-3xl animate-pulse z-[2]" />[m
+[31m-      <div className="absolute bottom-20 right-10 w-96 h-96 bg-cyan-500/20 rounded-full blur-3xl animate-pulse z-[2]" style={{ animationDelay: '1s' }} />[m
+[31m-[m
+[31m-      {/* Content */}[m
+[31m-      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 text-center w-full">[m
+[31m-        {/* Title with gradient and animation - SIN BADGE */}[m
+[31m-        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black mb-6 sm:mb-8 bg-gradient-to-r from-white via-blue-100 to-cyan-200 bg-clip-text text-transparent animate-fade-in leading-tight drop-shadow-2xl">[m
+[31m-          {highlightText(content.title)}[m
+[31m-        </h1>[m
+[31m-[m
+[31m-        {/* Description */}[m
+[31m-        <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-blue-100 mb-8 sm:mb-10 md:mb-12 max-w-4xl mx-auto leading-relaxed px-2 animate-fade-in font-light" style={{ animationDelay: '0.2s' }}>[m
+[31m-          {highlightText(content.description)}[m
+[31m-        </p>[m
+[31m-[m
+[31m-        {/* Buttons with advanced effects */}[m
+[31m-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 px-2 mb-12 sm:mb-16 animate-fade-in" style={{ animationDelay: '0.4s' }}>[m
+[31m-          <button className="relative w-full sm:w-auto group px-6 sm:px-8 md:px-10 py-3 sm:py-4 md:py-5 bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 text-white rounded-full font-bold text-sm sm:text-base md:text-lg shadow-2xl shadow-blue-500/50 hover:shadow-blue-500/80 hover:scale-105 transition-all duration-300 flex items-center justify-center gap-3 overflow-hidden">[m
+[31m-            {/* Shimmer effect */}[m
+[31m-            <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-700" />[m
+[31m-[m
+[31m-            {/* Ripple effect on hover */}[m
+[31m-            <span className="absolute inset-0 rounded-full bg-white/0 group-hover:bg-white/10 transition-colors duration-300" />[m
+[31m-[m
+[31m-            <span className="relative">{highlightText(content.button1)}</span>[m
+[31m-            <svg[m
+[31m-              className="relative w-5 h-5 group-hover:translate-x-2 transition-transform duration-300"[m
+[31m-              fill="none"[m
+[31m-              strokeLinecap="round"[m
+[31m-              strokeLinejoin="round"[m
+[31m-              strokeWidth="2.5"[m
+[31m-              viewBox="0 0 24 24"[m
+[31m-              stroke="currentColor"[m
+[32m+[m[32m          {/* ── Headline ── */}[m
+[32m+[m[32m          <div[m
+[32m+[m[32m            style={{[m
+[32m+[m[32m              opacity: isVisible ? 1 : 0,[m
+[32m+[m[32m              transform: isVisible ? 'translateY(0)' : 'translateY(24px)',[m
+[32m+[m[32m              transition: 'opacity 0.7s ease 0.15s, transform 0.7s ease 0.15s',[m
+[32m+[m[32m            }}[m
+[32m+[m[32m          >[m
+[32m+[m[32m            <h1 className="font-black tracking-tighter leading-tight mb-7"[m
+[32m+[m[32m              style={{ fontSize: 'clamp(2.2rem, 5vw, 4rem)', color: '#111827' }}[m
+             >[m
+[31m-              <path d="M17 8l4 4m0 0l-4 4m4-4H3"></path>[m
+[31m-            </svg>[m
+[31m-          </button>[m
+[31m-[m
+[31m-          <button className="relative w-full sm:w-auto group px-6 sm:px-8 md:px-10 py-3 sm:py-4 md:py-5 bg-white/10 backdrop-blur-md border-2 border-white/30 text-white rounded-full font-bold text-sm sm:text-base md:text-lg hover:bg-white/20 hover:border-white/50 hover:shadow-2xl transition-all duration-300 overflow-hidden">[m
+[31m-            <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-700" />[m
+[31m-            <span className="relative">{highlightText(content.button2)}</span>[m
+[31m-          </button>[m
+[31m-        </div>[m
+[32m+[m[32m              {highlightText('Construyendo Tus Sueños con Excelencia')}[m
+[32m+[m[32m            </h1>[m
+[32m+[m[32m          </div>[m
+ [m
+[31m-        {/* Stats with glassmorphism */}[m
+[31m-        <div className="flex justify-center gap-4 sm:gap-6 md:gap-8 flex-wrap px-2 mb-16 sm:mb-20 animate-fade-in" style={{ animationDelay: '0.8s' }}>[m
+[31m-          {[[m
+[31m-            { number: '5+', label: 'Años de Experiencia' },[m
+[31m-            { number: '18+', label: 'Proyectos Completados' },[m
+[31m-            { number: '98%', label: 'Clientes Satisfechos' },[m
+[31m-          ].map((stat, index) => ([m
+[31m-            <div[m
+[31m-              key={index}[m
+[31m-              className="group relative p-5 sm:p-6 md:p-8 bg-white/10 backdrop-blur-lg rounded-2xl sm:rounded-3xl border border-white/20 hover:bg-white/20 hover:scale-110 hover:border-white/40 transition-all duration-500 shadow-xl hover:shadow-2xl min-w-[110px] sm:min-w-[140px] overflow-hidden"[m
+[32m+[m[32m          {/* Description */}[m
+[32m+[m[32m          <p[m
+[32m+[m[32m            className="text-base sm:text-[17px] leading-relaxed mb-8 max-w-[440px]"[m
+[32m+[m[32m            style={{[m
+[32m+[m[32m              color: '#4b5563',[m
+[32m+[m[32m              opacity: isVisible ? 1 : 0,[m
+[32m+[m[32m              transform: isVisible ? 'translateY(0)' : 'translateY(12px)',[m
+[32m+[m[32m              transition: 'opacity 0.7s ease 0.35s, transform 0.7s ease 0.35s',[m
+[32m+[m[32m            }}[m
+[32m+[m[32m          >[m
+[32m+[m[32m            {highlightText(content.description)}[m
+[32m+[m[32m          </p>[m
+[32m+[m
+[32m+[m[32m          {/* CTAs */}[m
+[32m+[m[32m          <div[m
+[32m+[m[32m            className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 mb-7"[m
+[32m+[m[32m            style={{[m
+[32m+[m[32m              opacity: isVisible ? 1 : 0,[m
+[32m+[m[32m              transform: isVisible ? 'translateY(0)' : 'translateY(12px)',[m
+[32m+[m[32m              transition: 'opacity 0.7s ease 0.5s, transform 0.7s ease 0.5s',[m
+[32m+[m[32m            }}[m
+[32m+[m[32m          >[m
+[32m+[m[32m            {/* Primary */}[m
+[32m+[m[32m            <button[m
+[32m+[m[32m              className="group relative inline-flex items-center justify-center gap-3 w-full sm:w-auto px-8 py-4 text-white font-bold text-sm rounded-2xl transition-all duration-300 overflow-hidden hover:-translate-y-0.5"[m
+[32m+[m[32m              style={{ background: 'linear-gradient(135deg, #2563eb 0%, #06b6d4 100%)', boxShadow: '0 4px 24px rgba(37,99,235,0.45)' }}[m
+[32m+[m[32m              onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 8px 36px rgba(37,99,235,0.65)'; }}[m
+[32m+[m[32m              onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 4px 24px rgba(37,99,235,0.45)'; }}[m
+[32m+[m[32m              onClick={() => onNavigate?.('servicios')}[m
+             >[m
+[31m-              {/* Glow effect */}[m
+[31m-              <div className="absolute inset-0 bg-gradient-to-br from-blue-400/0 via-cyan-400/0 to-blue-400/0 group-hover:from-blue-400/20 group-hover:via-cyan-400/20 group-hover:to-blue-400/20 transition-all duration-500 rounded-2xl sm:rounded-3xl" />[m
+[31m-[m
+[31m-              <div className="relative">[m
+[31m-                <div className="text-2xl sm:text-3xl md:text-4xl font-black bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent mb-2">[m
+[31m-                  {highlightText(stat.number)}[m
+[31m-                </div>[m
+[31m-                <div className="text-xs sm:text-sm text-blue-100 font-medium">[m
+[31m-                  {highlightText(stat.label)}[m
+[31m-                </div>[m
+[31m-              </div>[m
+[31m-            </div>[m
+[31m-          ))}[m
+[32m+[m[32m              <span className="relative z-10">{highlightText(content.button1)}</span>[m
+[32m+[m[32m              <svg className="relative z-10 w-4 h-4 group-hover:translate-x-1.5 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">[m
+[32m+[m[32m                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />[m
+[32m+[m[32m              </svg>[m
+[32m+[m[32m              <div[m
+[32m+[m[32m                className="absolute inset-0 -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-700 z-0"[m
+[32m+[m[32m                style={{ background: 'linear-gradient(to right, transparent, rgba(255,255,255,0.15), transparent)' }}[m
+[32m+[m[32m              />[m
+[32m+[m[32m            </button>[m
+[32m+[m
+[32m+[m[32m            {/* Secondary — frosted glass, works over gradient + image */}[m
+[32m+[m[32m            <button[m
+[32m+[m[32m              className="group inline-flex items-center justify-center gap-3 w-full sm:w-auto px-8 py-4 font-semibold text-sm rounded-2xl transition-all duration-300 hover:-translate-y-0.5"[m
+

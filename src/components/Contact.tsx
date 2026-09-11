@@ -17,17 +17,21 @@ export default function Contact({ searchQuery = '' }: ContactProps) {
   const [focused, setFocused] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    const subject = encodeURIComponent(`Nuevo contacto de ${formData.name}`);
+    const body = encodeURIComponent(
+      `Nombre: ${formData.name}\n` +
+      `Correo: ${formData.email}\n` +
+      `Teléfono: ${formData.phone || 'No proporcionado'}\n\n` +
+      `Mensaje:\n${formData.message}`
+    );
 
-    console.log('Form submitted:', formData);
+    window.location.href = `mailto:cahitaobras@gmail.com?subject=${subject}&body=${body}`;
+
     setIsSubmitting(false);
-
-    // Reset form
     setFormData({ name: '', email: '', phone: '', message: '' });
   };
 
@@ -60,7 +64,7 @@ export default function Contact({ searchQuery = '' }: ContactProps) {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
         </svg>
       ),
-      color: 'from-cyan-600 to-teal-600'
+      color: 'from-blue-600 to-cyan-600'
     },
     {
       type: 'Ubicación',
@@ -72,7 +76,7 @@ export default function Contact({ searchQuery = '' }: ContactProps) {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
         </svg>
       ),
-      color: 'from-teal-600 to-emerald-600'
+      color: 'from-blue-600 to-cyan-600'
     },
     {
       type: 'Horario',
@@ -83,7 +87,7 @@ export default function Contact({ searchQuery = '' }: ContactProps) {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
       ),
-      color: 'from-emerald-600 to-blue-600'
+      color: 'from-blue-600 to-cyan-600'
     }
   ];
 
@@ -117,7 +121,7 @@ export default function Contact({ searchQuery = '' }: ContactProps) {
   return (
     <section
       id="contacto"
-      className="py-24 px-6 bg-gradient-to-br from-white via-blue-50/30 to-white relative overflow-hidden"
+      className="py-20 sm:py-24 px-4 sm:px-6 bg-gradient-to-br from-white via-blue-50/30 to-white relative overflow-hidden"
     >
       {/* Background decorative elements */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-blue-100/40 rounded-full blur-3xl" />
@@ -128,7 +132,7 @@ export default function Contact({ searchQuery = '' }: ContactProps) {
           <span className="inline-block px-4 py-2 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-full text-xs sm:text-sm font-bold uppercase tracking-wider mb-4 shadow-lg">
             Hablemos
           </span>
-          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mt-6 mb-6 bg-gradient-to-r from-slate-900 via-blue-900 to-slate-900 bg-clip-text text-transparent">
+          <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mt-6 mb-6 text-gray-900">
             Comencemos Tu Proyecto
           </h2>
           <p className="text-lg sm:text-xl lg:text-2xl text-gray-600 max-w-3xl mx-auto px-4 leading-relaxed">
@@ -136,7 +140,7 @@ export default function Contact({ searchQuery = '' }: ContactProps) {
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-12 items-start px-4">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-start px-0 sm:px-4">
           {/* Contact Form */}
           <div className="order-1 lg:order-1">
             <form onSubmit={handleSubmit} className="space-y-6">
@@ -243,7 +247,7 @@ export default function Contact({ searchQuery = '' }: ContactProps) {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="relative w-full group px-8 py-5 bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 text-white rounded-2xl font-bold text-lg shadow-2xl shadow-blue-500/50 hover:shadow-blue-500/80 hover:scale-105 transition-all duration-300 flex items-center justify-center gap-3 overflow-hidden disabled:opacity-50 disabled:cursor-not-allowed"
+                className="relative w-full group px-6 sm:px-8 py-4 sm:py-5 bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 text-white rounded-2xl font-bold text-base sm:text-lg shadow-2xl shadow-blue-500/50 hover:shadow-blue-500/80 hover:scale-105 transition-all duration-300 flex items-center justify-center gap-3 overflow-hidden disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {/* Shimmer effect */}
                 <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-700" />
@@ -283,10 +287,10 @@ export default function Contact({ searchQuery = '' }: ContactProps) {
             {filteredContactInfo.map((info, index) => (
               <div
                 key={index}
-                className="group relative p-6 bg-white/80 backdrop-blur-md rounded-3xl border-2 border-gray-100 hover:border-transparent transition-all duration-500 overflow-hidden hover:shadow-2xl hover:-translate-y-1"
+                className="group relative p-6 bg-white/80 backdrop-blur-md rounded-3xl border-2 border-gray-100 transition-all duration-500 overflow-hidden hover:shadow-2xl hover:-translate-y-1"
               >
                 {/* Gradient border on hover */}
-                <div className={`absolute inset-0 bg-gradient-to-br ${info.color} opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10 blur-xl`} />
+                <div className={`absolute inset-0 bg-gradient-to-br ${info.color} opacity-0 transition-opacity duration-500 -z-10 blur-xl`} />
 
                 <div className="relative flex items-start gap-4">
                   <div className={`flex-shrink-0 w-14 h-14 bg-gradient-to-br ${info.color} rounded-2xl flex items-center justify-center shadow-lg transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-500`}>
@@ -305,30 +309,6 @@ export default function Contact({ searchQuery = '' }: ContactProps) {
                 </div>
               </div>
             ))}
-
-            {/* Social Media */}
-            <div className="p-8 bg-white/80 backdrop-blur-md rounded-3xl border-2 border-gray-100 shadow-lg">
-              <h3 className="text-2xl font-bold mb-6 bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
-                Síguenos
-              </h3>
-              <div className="flex gap-4">
-                {[
-                  { name: 'Facebook', color: 'from-blue-600 to-blue-500', icon: 'f' },
-                  { name: 'Instagram', color: 'from-pink-500 to-orange-500', icon: 'ig' },
-                  { name: 'LinkedIn', color: 'from-blue-700 to-cyan-600', icon: 'in' },
-                  { name: 'Twitter', color: 'from-blue-400 to-cyan-400', icon: 'x' },
-                ].map((social, index) => (
-                  <button
-                    key={index}
-                    className={`group w-14 h-14 bg-gradient-to-br ${social.color} rounded-2xl flex items-center justify-center hover:scale-110 transition-all duration-300 shadow-lg hover:shadow-2xl relative overflow-hidden`}
-                    aria-label={social.name}
-                  >
-                    <span className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity duration-300" />
-                    <span className="relative text-white font-bold text-lg">{social.icon}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
           </div>
         </div>
       </div>
