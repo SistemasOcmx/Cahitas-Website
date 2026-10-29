@@ -47,7 +47,6 @@ export function HeroSection() {
         <div className="hero__location"><span>CULIACÁN</span><i aria-hidden="true" /><span>TODO MÉXICO</span></div>
       </div>
       <a className="hero__scroll" href="#cahita"><span>Explorar</span><ArrowDown size={16} strokeWidth={1.5} aria-hidden="true" /></a>
-      <span className="hero__image-note">Visualización ilustrativa</span>
       <span className="hero__coordinates" aria-hidden="true">24°48′N &nbsp; 107°23′W</span>
     </section>
   )
@@ -66,8 +65,7 @@ export function AboutSection() {
             <a className="text-link" href="#proceso">Así trabajamos <ArrowRight size={16} aria-hidden="true" /></a>
           </div>
           <figure className="about__figure reveal">
-            <img src="/img/webp/02_Quienes_Somos.webp" alt="Visualización ilustrativa de una persona revisando planos en una obra" loading="lazy" />
-            <figcaption>IMAGEN ILUSTRATIVA</figcaption>
+            <img src="/img/webp/02_Quienes_Somos.webp" alt="Persona revisando planos en una obra" loading="lazy" />
             <span className="about__figure-mark" aria-hidden="true">C.</span>
           </figure>
         </div>
@@ -113,7 +111,6 @@ export function ServicesSection() {
                   <p>{service.description}</p>
                   <p>{service.details}</p>
                   <img src={service.image} alt="" loading="lazy" />
-                  <span>Imagen ilustrativa</span>
                 </div>
               </div>
             ))}
@@ -121,7 +118,7 @@ export function ServicesSection() {
           <div className="service-preview" aria-live="polite" aria-atomic="true">
             <img key={activeService.image} src={activeService.image} alt="" loading="lazy" />
             <div className="service-preview__scrim" aria-hidden="true" />
-            <div className="service-preview__top"><span>SERVICIO {activeService.number} / 06</span><span>IMAGEN ILUSTRATIVA</span></div>
+            <div className="service-preview__top"><span>SERVICIO {activeService.number} / 06</span></div>
             <div className="service-preview__content">
               <h3>{activeService.title}</h3>
               <p>{activeService.description}</p>
@@ -130,7 +127,6 @@ export function ServicesSection() {
             </div>
           </div>
         </div>
-        <p className="services__note">Las imágenes de esta sección son ilustrativas y no representan obras publicadas de Cahita.</p>
       </div>
     </section>
   )
@@ -209,7 +205,7 @@ function MexicoMap() {
   return (
     <svg className="mexico-map" viewBox="0 0 500 390" role="img" aria-labelledby="mexico-map-title mexico-map-desc">
       <title id="mexico-map-title">Cobertura de Cahita en México</title>
-      <desc id="mexico-map-desc">Silueta de México basada en la referencia visual, con un indicador en Culiacán, Sinaloa.</desc>
+      <desc id="mexico-map-desc">Mapa de México con un indicador en Culiacán, Sinaloa.</desc>
       <defs>
         <pattern id="map-dots" width="9" height="9" patternUnits="userSpaceOnUse"><circle cx="1.2" cy="1.2" r=".8" fill="currentColor" /></pattern>
         <clipPath id="mexico-clip"><path d={MEXICO_PATH} /></clipPath>
@@ -237,7 +233,7 @@ export function CoverageSection() {
           <p>Con base en Culiacán, Sinaloa, coordinamos proyectos en todo el país.</p>
           <div className="coverage__base"><MapPin size={17} strokeWidth={1.5} aria-hidden="true" /><span>Base de operaciones</span><strong>Culiacán, Sinaloa</strong></div>
         </div>
-        <div className="coverage__visual reveal"><MexicoMap /><span className="coverage__map-note">SILUETA DE REFERENCIA · SIN PROYECTOS REPRESENTADOS</span></div>
+        <div className="coverage__visual reveal"><MexicoMap /></div>
         <div className="coverage__services"><span>Construcción</span><span>Diseño arquitectónico</span><span>Remodelación</span><span>Supervisión de obra</span><span>Consultoría</span></div>
       </div>
     </section>
