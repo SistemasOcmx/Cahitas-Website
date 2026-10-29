@@ -285,6 +285,11 @@ export function ContactSection() {
             </div>
           </div>
           <form className="contact-form reveal" onSubmit={submitContact}>
+            <div className="contact-form__intro">
+              <p className="eyebrow"><span>08.1</span><i aria-hidden="true" />Tu proyecto</p>
+              <h3>Cuéntanos qué tienes en mente.</h3>
+              <p className="contact-form__intro-copy">Completa los campos y prepara un correo para Cahita.</p>
+            </div>
             <div className="contact-form__row">
               <label>Nombre<input name="name" type="text" autoComplete="name" placeholder="Tu nombre" required /></label>
               <label>Teléfono<input name="phone" type="tel" autoComplete="tel" placeholder="667 000 0000" /></label>
