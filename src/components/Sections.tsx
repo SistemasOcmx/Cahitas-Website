@@ -407,10 +407,6 @@ export function ContactSection() {
             <a className="contact-line" href="tel:+526679339039"><Phone size={18} strokeWidth={1.5} aria-hidden="true" /><span><small>Teléfono</small>667 933 9039</span><ArrowUpRight size={16} aria-hidden="true" /></a>
             <a className="contact-line" href="mailto:cahitaobras@gmail.com"><Mail size={18} strokeWidth={1.5} aria-hidden="true" /><span><small>Correo electrónico</small>cahitaobras@gmail.com</span><ArrowUpRight size={16} aria-hidden="true" /></a>
             <div className="contact-line contact-line--static"><MapPin size={18} strokeWidth={1.5} aria-hidden="true" /><span><small>Base de operaciones</small>Culiacán, Sinaloa, México</span></div>
-            <div className="contact__socials" aria-label="Redes sociales">
-              <span>Facebook</span><span>Instagram</span><span>LinkedIn</span>
-              <small>Perfiles oficiales próximamente</small>
-            </div>
           </div>
           <form className="contact-form reveal" onSubmit={submitContact}>
             <div className="contact-form__intro">
