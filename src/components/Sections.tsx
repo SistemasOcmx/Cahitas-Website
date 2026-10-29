@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react'
+import { useEffect, useRef, useState, type FormEvent, type KeyboardEvent } from 'react'
 import {
   ArrowDown,
   ArrowRight,
@@ -253,6 +253,134 @@ export function CallToActionSection() {
   )
 }
 
+function ServiceSelect() {
+  const [value, setValue] = useState('')
+  const [isOpen, setIsOpen] = useState(false)
+  const [activeIndex, setActiveIndex] = useState(-1)
+  const containerRef = useRef<HTMLDivElement>(null)
+  const triggerRef = useRef<HTMLDivElement>(null)
+  const optionRefs = useRef<Array<HTMLDivElement | null>>([])
+  const selectedIndex = services.findIndex((service) => service.title === value)
+  const selectedService = services[selectedIndex]
+
+  useEffect(() => {
+    const closeOnOutsidePointer = (event: PointerEvent) => {
+      if (!containerRef.current?.contains(event.target as Node)) setIsOpen(false)
+    }
+
+    document.addEventListener('pointerdown', closeOnOutsidePointer)
+    return () => document.removeEventListener('pointerdown', closeOnOutsidePointer)
+  }, [])
+
+  useEffect(() => {
+    if (isOpen && activeIndex >= 0) optionRefs.current[activeIndex]?.scrollIntoView({ block: 'nearest' })
+  }, [activeIndex, isOpen])
+
+  const chooseService = (index: number) => {
+    const service = services[index]
+    if (!service) return
+    setValue(service.title)
+    setActiveIndex(index)
+    setIsOpen(false)
+    triggerRef.current?.focus()
+  }
+
+  const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === 'ArrowDown') {
+      event.preventDefault()
+      setActiveIndex(isOpen ? (activeIndex + 1) % services.length : selectedIndex >= 0 ? selectedIndex : 0)
+      setIsOpen(true)
+    } else if (event.key === 'ArrowUp') {
+      event.preventDefault()
+      setActiveIndex(isOpen ? (activeIndex - 1 + services.length) % services.length : selectedIndex >= 0 ? selectedIndex : services.length - 1)
+      setIsOpen(true)
+    } else if (event.key === 'Home' && isOpen) {
+      event.preventDefault()
+      setActiveIndex(0)
+    } else if (event.key === 'End' && isOpen) {
+      event.preventDefault()
+      setActiveIndex(services.length - 1)
+    } else if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault()
+      if (isOpen && activeIndex >= 0) chooseService(activeIndex)
+      else {
+        setActiveIndex(selectedIndex >= 0 ? selectedIndex : 0)
+        setIsOpen(true)
+      }
+    } else if (event.key === 'Escape' && isOpen) {
+      event.preventDefault()
+      setIsOpen(false)
+    } else if (event.key === 'Tab') {
+      setIsOpen(false)
+    } else if (event.key.length === 1 && !event.ctrlKey && !event.metaKey && !event.altKey) {
+      const index = services.findIndex((service) => service.title.toLocaleLowerCase().startsWith(event.key.toLocaleLowerCase()))
+      if (index >= 0) {
+        setActiveIndex(index)
+        setIsOpen(true)
+      }
+    }
+  }
+
+  const toggleOptions = () => {
+    if (isOpen) setIsOpen(false)
+    else {
+      setActiveIndex(selectedIndex >= 0 ? selectedIndex : 0)
+      setIsOpen(true)
+    }
+  }
+
+  return (
+    <div className="contact-form__service-field">
+      <span id="contact-service-label" className="contact-form__service-label">Tipo de servicio</span>
+      <input type="hidden" name="service" value={value} />
+      <div className={`contact-form__select${isOpen ? ' is-open' : ''}`} ref={containerRef}>
+        <div
+          id="contact-service-select"
+          ref={triggerRef}
+          className="contact-form__select-trigger"
+          tabIndex={0}
+          role="combobox"
+          aria-haspopup="listbox"
+          aria-autocomplete="none"
+          aria-expanded={isOpen}
+          aria-controls={isOpen ? 'contact-service-options' : undefined}
+          aria-activedescendant={isOpen && activeIndex >= 0 ? `contact-service-option-${activeIndex}` : undefined}
+          aria-labelledby="contact-service-label contact-service-value"
+          onClick={toggleOptions}
+          onKeyDown={handleKeyDown}
+        >
+          <span id="contact-service-value" className={`contact-form__select-value${selectedService ? '' : ' is-placeholder'}`}>
+            {selectedService && <span className="contact-form__select-number">{selectedService.number}</span>}
+            {selectedService?.title ?? 'Selecciona una opción'}
+          </span>
+          <ChevronDown size={17} strokeWidth={1.6} aria-hidden="true" />
+        </div>
+        {isOpen && (
+          <div className="contact-form__options" id="contact-service-options" role="listbox" aria-labelledby="contact-service-label">
+            {services.map((service, index) => (
+              <div
+                className={`contact-form__option${activeIndex === index ? ' is-active' : ''}${selectedIndex === index ? ' is-selected' : ''}`}
+                id={`contact-service-option-${index}`}
+                key={service.number}
+                ref={(element) => { optionRefs.current[index] = element }}
+                role="option"
+                aria-selected={selectedIndex === index}
+                onMouseDown={(event) => event.preventDefault()}
+                onMouseEnter={() => setActiveIndex(index)}
+                onClick={() => chooseService(index)}
+              >
+                <span className="contact-form__option-number">{service.number}</span>
+                <span>{service.title}</span>
+                {selectedIndex === index && <Check size={15} strokeWidth={1.8} aria-hidden="true" />}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
 export function ContactSection() {
   const submitContact = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -295,7 +423,7 @@ export function ContactSection() {
               <label>Teléfono<input name="phone" type="tel" autoComplete="tel" placeholder="667 000 0000" /></label>
             </div>
             <label>Correo electrónico<input name="email" type="email" autoComplete="email" placeholder="nombre@correo.com" required /></label>
-            <label>Tipo de servicio<select name="service" defaultValue=""><option value="">Selecciona una opción</option>{services.map((service) => <option key={service.number}>{service.title}</option>)}</select></label>
+            <ServiceSelect />
             <label>Cuéntanos de tu proyecto<textarea name="message" rows={4} placeholder="¿Qué espacio quieres crear o transformar?" required /></label>
             <button className="button button--dark contact-form__submit" type="submit">Preparar correo <ArrowUpRight size={17} aria-hidden="true" /></button>
             <p className="contact-form__note"><Check size={13} aria-hidden="true" /> Se abrirá tu aplicación de correo con el mensaje listo para enviar.</p>
