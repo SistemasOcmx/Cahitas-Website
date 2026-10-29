@@ -444,3 +444,7 @@ img { max-width: 100%; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
+
+/* Justified body copy */
+p:not(.eyebrow), .timeline__item span { text-align: justify; text-justify: inter-word; hyphens: auto; }
+p.hero__kicker, .hero__bottom p, p.about__lead, p.manifesto__answer, .final-cta__bottom p, p.contact__aside, p.contact-form__note, .site-footer__main > div:first-child > p { text-align: left; hyphens: manual; }

@@ -38,7 +38,7 @@ export function HeroSection() {
       <div className="hero__shade" aria-hidden="true" />
       <div className="hero__grid" aria-hidden="true" />
       <div className="hero__content page-width">
-        <p className="hero__kicker reveal"><span className="hero__status" /> Desde Culiacán, Sinaloa · Desde 2021</p>
+        <p className="hero__kicker reveal"><span className="hero__status" /> Desde Culiacán, Sinaloa · Desde 2019</p>
         <h1 id="hero-title" className="hero__title reveal">CONSTRUIMOS<br /><em>ESPACIOS</em><br />QUE PERDURAN<span>.</span></h1>
         <div className="hero__bottom reveal">
           <p>Construcción, diseño y supervisión<br />para proyectos que importan.</p>
@@ -61,7 +61,7 @@ export function AboutSection() {
         <div className="about__main">
           <div className="about__copy reveal">
             <p className="about__lead">Transformamos ideas en espacios funcionales, seguros y duraderos.</p>
-            <p>Desde 2021 desarrollamos proyectos residenciales y comerciales de construcción, diseño, remodelación, supervisión y consultoría. Acompañamos a cada cliente para comprender sus necesidades y convertirlas en soluciones para su espacio.</p>
+            <p>Desde 2019 desarrollamos proyectos residenciales y comerciales de construcción, diseño, remodelación, supervisión y consultoría. Acompañamos a cada cliente para comprender sus necesidades y convertirlas en soluciones para su espacio.</p>
             <p>Nuestra visión integra planeación, funcionalidad, estética, calidad y seguimiento en las distintas etapas del proyecto.</p>
             <a className="text-link" href="#proceso">Así trabajamos <ArrowRight size={16} aria-hidden="true" /></a>
           </div>
@@ -72,14 +72,14 @@ export function AboutSection() {
           </figure>
         </div>
         <div className="about__facts reveal">
-          <div><span>01</span><strong>Desde 2021</strong><small>Inicio de operaciones</small></div>
+          <div><span>01</span><strong>Desde 2019</strong><small>Inicio de operaciones</small></div>
           <div><span>02</span><strong>Culiacán</strong><small>Sinaloa, México</small></div>
           <div><span>03</span><strong>Todo México</strong><small>Cobertura nacional</small></div>
         </div>
         <div className="about__purpose reveal">
           <p className="eyebrow"><span>01.1</span><i aria-hidden="true" />Propósito</p>
-          <div><h3>Nuestra misión</h3><p>Diseñar, construir y transformar espacios mediante soluciones funcionales, responsables y de calidad, acompañando a nuestros clientes durante las etapas de sus proyectos.</p></div>
-          <div><h3>Nuestra visión</h3><p>Consolidarnos como una empresa reconocida por la calidad, la confianza y la integración de diseño, planeación, construcción y supervisión.</p></div>
+          <div><h3>Nuestra misión</h3><p>Somos una empresa dedicada a la construcción de obra civil e instalaciones en general, pensada en atender y resolver las necesidades del público para llevar a cabo proyectos afines de manera profesional, con la mayor calidad y de forma eficaz, con lo cual daremos satisfacción plena a las necesidades de nuestros clientes.</p></div>
+          <div><h3>Nuestra visión</h3><p>Convertirnos en la constructora inmobiliaria de mayor calidad en el área local.</p></div>
         </div>
         <div className="timeline reveal" aria-label="Trayectoria de Cahita Constructora">
           <p className="eyebrow"><span>01.2</span><i aria-hidden="true" />Trayectoria</p>
@@ -144,7 +144,7 @@ export function ManifestoSection() {
         <p className="eyebrow eyebrow--light"><span>03</span><i aria-hidden="true" />Nuestra manera de hacer</p>
         <h2>NO CONSTRUIMOS<br />SOLAMENTE ESTRUCTURAS<span>.</span></h2>
         <p className="manifesto__answer">Planeamos. Diseñamos. Construimos.<br /><strong>Espacios pensados para funcionar.</strong></p>
-        <span className="manifesto__index" aria-hidden="true">C / 2021</span>
+        <span className="manifesto__index" aria-hidden="true">C / 2019</span>
       </div>
     </section>
   )

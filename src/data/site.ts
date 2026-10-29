@@ -108,8 +108,10 @@ export const commitments = [
 export const values = ['Innovación', 'Colaboración', 'Excelencia', 'Pasión', 'Integridad', 'Crecimiento']
 
 export const milestones = [
-  { year: '2021', text: 'Inicio de operaciones' },
-  { year: '2022', text: 'Ampliación de servicios' },
-  { year: '2023', text: 'Evolución de procesos' },
-  { year: '2024', text: 'Consolidación de capacidades' },
+  { year: '2019', text: 'Inicio de operaciones con enfoque en obra civil e instalaciones.' },
+  { year: '2020', text: 'Desarrollo de experiencia y atención en nuevos proyectos.' },
+  { year: '2021', text: 'Participación en proyectos residenciales y comerciales.' },
+  { year: '2022', text: 'Ampliación de servicios para atender más etapas de cada proyecto.' },
+  { year: '2023', text: 'Evolución de procesos de planeación, coordinación y seguimiento.' },
+  { year: '2024', text: 'Consolidación de capacidades en construcción, diseño y supervisión.' },
 ]
